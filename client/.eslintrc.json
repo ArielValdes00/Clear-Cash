@@ -25,6 +25,6 @@
         "@typescript-eslint/no-misused-promises" : "off",
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/semi": ["error", "always"],
-        "@typescript-eslint/space-before-function-paren": "off"
+        "@typescript-eslint/strict-boolean-expressions" : "off"
       }
 }
