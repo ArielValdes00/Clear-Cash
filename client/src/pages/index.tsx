@@ -1,28 +1,10 @@
-import Navbar from '@/components/Navbar';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 
-export default function Home () {
-    const [theme, setTheme] = useState<string>('');
-    const [toggleButton, setToggleButton] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (theme === 'dark') {
-            document.querySelector('html')?.classList.add('dark');
-        } else {
-            document.querySelector('html')?.classList.remove('dark');
-        }
-    }, [theme]);
-
-    const handleChangeTheme = (): void => {
-        setTheme((prevTheme: string) => prevTheme === 'dark' ? 'light' : 'dark');
-        setToggleButton(!toggleButton);
-    };
+export default function Home() {
     return (
-        <div className='bg-gray-200 dark:bg-black flex flex-col h-screen'>
-            <Navbar handleChangeTheme={handleChangeTheme} toggleButton={toggleButton} />
-            <div className='mb-5 flex flex-col max-w-[350px] sm:max-w-sm lg:max-w-md text-center mx-auto flex-grow justify-center gap-6 items-center'>
+        <div className='bg-gray-200 dark:bg-black flex flex-grow'>
+            <div className='mb-5 flex flex-col text-center mx-auto justify-center gap-6 items-center max-w-[90%] sm:max-w-sm md:max-w-lg'>
                 <h1 className='text-6xl lg:text-7xl font-extrabold text-color-green shadow-text'>Take control of your finances</h1>
                 <p className='max-w-xs lg:max-w-md dark:text-gray-400 text-[15px] text-gray-500'>
                     With ClearCash, managing your expenses has never been easier. Track your spending, set budgets, and achieve your financial goals all in one place.
