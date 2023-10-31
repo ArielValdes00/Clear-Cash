@@ -1,5 +1,7 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import type { NextRouter } from 'next/router';
 
 interface TableData {
     month: string
@@ -10,6 +12,7 @@ interface TableData {
 }
 
 const BoardReport: React.FC = () => {
+    const router: NextRouter = useRouter();
     const data: TableData[] = [
         {
             month: 'January',
@@ -48,7 +51,11 @@ const BoardReport: React.FC = () => {
                 </thead>
                 <tbody className="text-center text-gray-600 dark:text-gray-400">
                     {data.map((item, index) => (
-                        <tr key={index} className="border-t border-color-green">
+                        <tr
+                            onClick={async () => { await router.push(`/dashboard/${item.month}`); }}
+                            key={index}
+                            className="border-t border-color-green cursor-pointer hover:bg-gray-300 dark:hover:bg-opacity-10"
+                        >
                             <td className="p-2 py-3 md:p-4">{item.month}</td>
                             <td className="p-2 py-3 md:p-4">{item.initialMoney}</td>
                             <td className="p-2 py-3 md:p-4 hidden md:block">{item.spentMoney}</td>
@@ -59,11 +66,17 @@ const BoardReport: React.FC = () => {
                 </tbody>
             </table>
             <div className="flex justify-center gap-3 items-center my-3">
-                <button className="bg-color-green dark:text-black text-white p-2 rounded-md hover:bg-opacity-80">
+                <button
+                    type='button'
+                    className="bg-color-green dark:text-black text-white p-2 rounded-md hover:bg-opacity-80"
+                >
                     <FaArrowLeft size={17} />
                 </button>
                 <p className='text-gray-600 dark:text-gray-400'>1 of 3</p>
-                <button className="bg-color-green dark:text-black text-white p-2 rounded-md hover-bg-opacity-80">
+                <button
+                    type='button'
+                    className="bg-color-green dark:text-black text-white p-2 rounded-md hover:bg-opacity-80"
+                >
                     <FaArrowRight size={17} />
                 </button>
             </div>

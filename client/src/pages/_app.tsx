@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import { ThemeProvider } from '@/context/ThemeContext';
+import Head from 'next/head';
 
 export default function App({ Component, pageProps }: AppProps) {
     const [theme, setTheme] = useState<string>('light');
@@ -24,6 +25,10 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
         <ThemeProvider value={{ handleChangeTheme, toggleButton }}>
             <div className='h-screen bg-gray-200 dark:bg-black flex flex-col'>
+                <Head>
+                    <title>Clear Cash</title>
+                    <link rel="icon" href="https://img.icons8.com/4BB42D/cheap-2.png" />
+                </Head>
                 <Navbar />
                 <Component {...pageProps} />
             </div>

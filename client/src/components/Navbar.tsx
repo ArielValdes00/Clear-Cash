@@ -19,12 +19,12 @@ const Navbar: React.FC = () => {
             </div>
             <div className={`mt-[15px] ${isDashboardRoute ? 'ml-auto' : 'mx-auto md:ml-auto lg:ml-12 xl:ml-24 md:col-start-8'}`}>
                 <label
-                    htmlFor={'check'}
+                    htmlFor='check'
                     className={'py-2 cursor-pointer relative mb-3 w-[75px] lg:w-20 h-[33px] shadow lg:h-9 rounded-full flex items-center border-gray-300 dark:border-color-green border gap-2'}
                 >
                     <input
                         type='checkbox'
-                        id={'check'}
+                        id='check'
                         className='sr-only peer'
                         onClick={handleChangeTheme}
                     />
@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
             {isDashboardRoute
                 ? ''
                 : (
-                    <button className='shadow ml-auto md:col-start-9 px-4 lg:py-2 py-[6px] font-semibold rounded-md bg-color-green text-gray-100 dark:text-black text-sm hover-bg-opacity-80'>
+                    <button className='shadow ml-auto md:col-start-9 px-4 lg:py-2 py-[6px] font-semibold rounded-md bg-color-green text-gray-100 dark:text-black text-sm hover:bg-opacity-80'>
                         Log In
                     </button>
                 )}
