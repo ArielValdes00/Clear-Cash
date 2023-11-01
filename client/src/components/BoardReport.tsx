@@ -50,7 +50,7 @@ const BoardReport: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody className="text-center text-gray-600 dark:text-gray-400">
-                    {data.map((item, index) => (
+                    {data.map((item: TableData, index: number) => (
                         <tr
                             onClick={async () => { await router.push(`/dashboard/${item.month}`); }}
                             key={index}

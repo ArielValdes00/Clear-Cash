@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -6,6 +6,8 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
+import { useTheme } from '@/context/ThemeContext';
+import { darkModeColors, lightModeColors } from '@/utils/colors';
 
 ChartJS.register(
     ArcElement,
@@ -14,19 +16,28 @@ ChartJS.register(
 );
 
 const DoughnutChart: React.FC = () => {
+    const { toggleButton } = useTheme();
+
+    const [colors, setColors] = useState<string[]>(toggleButton ? darkModeColors : lightModeColors);
+
+    useEffect(() => {
+        setColors(toggleButton ? darkModeColors : lightModeColors);
+    }, [toggleButton]);
+
     const data = {
-        labels: ['Red', 'Blue', 'Yellow'],
         datasets: [
             {
                 data: [300, 50, 100],
-                backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
-                hoverOffset: 4
+                backgroundColor: colors,
+                hoverOffset: 2,
+                borderWidth: 0
             }
-        ]
+        ],
+        redraw: true
     };
 
     return (
-        <div className='w-[200px]'>
+        <div className='w-[140px] md:w-[200px]'>
             <Doughnut data={data} />
         </div>
     );

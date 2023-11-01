@@ -1,11 +1,12 @@
 import { useTheme } from '@/context/ThemeContext';
 import { useRouter } from 'next/router';
+import type { NextRouter } from 'next/router';
 import React from 'react';
 import { BsFillMoonFill, BsFillSunFill, BsCoin } from 'react-icons/bs';
 
 const Navbar: React.FC = () => {
     const { handleChangeTheme, toggleButton } = useTheme();
-    const router = useRouter();
+    const router: NextRouter = useRouter();
     const isDashboardRoute: boolean = router.pathname === '/dashboard';
 
     return (
