@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 interface ExpensiveData {
     expenses: number
@@ -36,30 +37,45 @@ const Expenses: React.FC = () => {
     ];
 
     return (
-        <div className='border rounded-md border-black dark:border-color-green p-5'>
+        <div className=''>
             <div className='flex justify-between items-center'>
-                <p>Your Expensives</p>
-                <select className='rounded-lg p-1 dark:text-black'>
-                    <option value="Todos">All</option>
-                    <option value="Inversiones">Investments</option>
-                    <option value="Ropa">Clothing</option>
+                <p className='font-semibold text-xl'>Your Expensives</p>
+                <select className='rounded-lg px-2 py-1 dark:text-black bg-gray-100 border border-gray-400'>
+                    <option value="All">All</option>
+                    <option value="Investments">Investments</option>
+                    <option value="Clothing">Clothing</option>
                     <option value="Food">Food</option>
                     <option value="travels">travels</option>
                 </select>
             </div>
             <div>
                 {data.map((card: ExpensiveData, index: number) => (
-                    <div key={index} className='grid grid-cols-2 border border-black dark:border-color-green rounded-md p-3 my-3'>
-                        <div>
-                            <p>Expensive: ${card.expenses}</p>
-                            <p>Description: {card.description}</p>
+                    <div key={index} className='grid grid-cols-3 bg-gray-100 dark:text-gray-200 dark:bg-zinc-800 rounded-md p-3 my-3 text-black text-[15px]'>
+                        <div className='col-span-2 flex flex-col gap-1'>
+                            <p>Expensive: <strong>${card.expenses}</strong></p>
+                            <p>{card.description}</p>
                         </div>
-                        <div className='ml-auto'>
-                            <p>{card.category}</p>
-                            <p>{card.date.toLocaleDateString()}</p>
+                        <div className='ml-auto text-end flex flex-col gap-1'>
+                            <p className='font-semibold'>{card.category}</p>
+                            <p className='text-sm'>{card.date.toLocaleDateString()}</p>
                         </div>
                     </div>
                 ))}
+                <div className="flex justify-center gap-3 items-center my-4">
+                    <button
+                        type='button'
+                        className="text-gray-100 bg-color-green p-2 rounded-md hover:bg-opacity-80"
+                    >
+                        <FaArrowLeft size={15} />
+                    </button>
+                    <p className='text-gray-600 dark:text-gray-400'>1 of 3</p>
+                    <button
+                        type='button'
+                        className="text-gray-100 bg-color-green p-2 rounded-md hover:bg-opacity-80"
+                    >
+                        <FaArrowRight size={15} />
+                    </button>
+                </div>
             </div>
         </div>
     );

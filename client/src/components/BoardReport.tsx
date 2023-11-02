@@ -38,23 +38,23 @@ const BoardReport: React.FC = () => {
     ];
 
     return (
-        <div className="w-full">
-            <table className="table-auto text-white w-full">
-                <thead className="text-color-green">
+        <div className="w-full rounded-md">
+            <table className="table-auto w-full">
+                <thead className="text-end border-black dark:border-gray-100 border-b dark:text-gray-100">
                     <tr>
-                        <th className="p-3 md:p-4 text-center">Month</th>
-                        <th className="p-3 md:p-4 text-center">Initial Money</th>
-                        <th className="p-3 md:p-4 text-center hidden md:block">Spent Money</th>
-                        <th className="p-3 md:p-4 text-center">Current Money</th>
-                        <th className="p-3 md:p-4 text-center hidden md:block">Spent Percentage</th>
+                        <th className="p-3 md:p-4">Month</th>
+                        <th className="p-3 md:p-4">Initial Money</th>
+                        <th className="p-3 md:p-4 hidden md:block">Spent Money</th>
+                        <th className="p-3 md:p-4">Current Money</th>
+                        <th className="p-3 md:p-4 hidden md:block">Spent Percentage</th>
                     </tr>
                 </thead>
-                <tbody className="text-center text-gray-600 dark:text-gray-400">
+                <tbody className="text-end">
                     {data.map((item: TableData, index: number) => (
                         <tr
                             onClick={async () => { await router.push(`/dashboard/${item.month}`); }}
                             key={index}
-                            className="border-t border-color-green cursor-pointer hover:bg-gray-300 dark:hover:bg-opacity-10"
+                            className="border-b border-black dark:border-gray-100 cursor-pointer bg-gray-100 dark:bg-zinc-800 text-black dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-opacity-10"
                         >
                             <td className="p-2 py-3 md:p-4">{item.month}</td>
                             <td className="p-2 py-3 md:p-4">{item.initialMoney}</td>
@@ -65,19 +65,19 @@ const BoardReport: React.FC = () => {
                     ))}
                 </tbody>
             </table>
-            <div className="flex justify-center gap-3 items-center my-3">
+            <div className="flex justify-center gap-3 items-center mt-5">
                 <button
                     type='button'
-                    className="bg-color-green dark:text-black text-white p-2 rounded-md hover:bg-opacity-80"
+                    className="text-gray-100 bg-color-green p-2 rounded-md hover:bg-opacity-80"
                 >
-                    <FaArrowLeft size={17} />
+                    <FaArrowLeft size={15} />
                 </button>
                 <p className='text-gray-600 dark:text-gray-400'>1 of 3</p>
                 <button
                     type='button'
-                    className="bg-color-green dark:text-black text-white p-2 rounded-md hover:bg-opacity-80"
+                    className="text-gray-100 bg-color-green p-2 rounded-md hover:bg-opacity-80"
                 >
-                    <FaArrowRight size={17} />
+                    <FaArrowRight size={15} />
                 </button>
             </div>
         </div>
