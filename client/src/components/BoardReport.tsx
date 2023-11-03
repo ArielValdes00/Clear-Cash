@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import type { NextRouter } from 'next/router';
+import ButtonsPagination from './misc/ButtonsPagination';
 
 interface TableData {
     month: string
@@ -54,7 +54,7 @@ const BoardReport: React.FC = () => {
                         <tr
                             onClick={async () => { await router.push(`/dashboard/${item.month}`); }}
                             key={index}
-                            className="border-b border-black dark:border-gray-100 cursor-pointer bg-gray-100 dark:bg-zinc-800 text-black dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-opacity-10"
+                            className="border-b border-black dark:border-gray-100 cursor-pointer bg-gray-100 dark:bg-zinc-800 text-black dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-opacity-80"
                         >
                             <td className="p-2 py-3 md:p-4">{item.month}</td>
                             <td className="p-2 py-3 md:p-4">{item.initialMoney}</td>
@@ -65,21 +65,7 @@ const BoardReport: React.FC = () => {
                     ))}
                 </tbody>
             </table>
-            <div className="flex justify-center gap-3 items-center mt-5">
-                <button
-                    type='button'
-                    className="text-gray-100 bg-color-green p-2 rounded-md hover:bg-opacity-80"
-                >
-                    <FaArrowLeft size={15} />
-                </button>
-                <p className='text-gray-600 dark:text-gray-400'>1 of 3</p>
-                <button
-                    type='button'
-                    className="text-gray-100 bg-color-green p-2 rounded-md hover:bg-opacity-80"
-                >
-                    <FaArrowRight size={15} />
-                </button>
-            </div>
+            <ButtonsPagination />
         </div>
     );
 };

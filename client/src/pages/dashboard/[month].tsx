@@ -2,8 +2,10 @@ import DoughnutChart from '@/components/DoughnutChart';
 import DoughnutLabels from '@/components/DoughnutLabels';
 import ExpenseForm from '@/components/ExpenseForm';
 import Expenses from '@/components/Expenses';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { NextRouter } from 'next/router';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const monthPage = (): JSX.Element => {
     const router: NextRouter = useRouter();
@@ -12,7 +14,13 @@ const monthPage = (): JSX.Element => {
         <div className='flex mt-6 md:m-0 bg-gray-200 dark:bg-black items-center md:flex-grow dark:text-white'>
             <div className='grid md:grid-cols-2 gap-10 w-[80%] mx-auto'>
                 <div className='flex flex-col gap-2'>
-                    <h3 className='text-2xl font-semibold'>{month} Report</h3>
+                    <div className='flex items-center gap-1 text-gray-700 dark:text-gray-400 text-sm'>
+                        <Link href={'/dashboard'} className='flex items-center gap-1'>
+                                <FaArrowLeft size={11} />
+                                <strong className='underline'>Back</strong>
+                        </Link>
+                    </div>
+                    <h3 className='text-2xl font-semibold mt-2'>{month} Report</h3>
                     <div className='flex justify-between py-2'>
                         <div className=''>
                             <p>Current Money:</p>
@@ -23,9 +31,7 @@ const monthPage = (): JSX.Element => {
                     </div>
                     <ExpenseForm />
                 </div>
-                <div>
-                    <Expenses />
-                </div>
+                <Expenses />
             </div>
         </div>
     );

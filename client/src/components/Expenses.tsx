@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import ButtonsPagination from './misc/ButtonsPagination';
 
 interface ExpensiveData {
     expenses: number
@@ -33,14 +33,20 @@ const Expenses: React.FC = () => {
             description: 'Weekend trip',
             category: 'Travel',
             date: new Date('2023-10-28')
+        },
+        {
+            expenses: 250.0,
+            description: 'Pizza with friends',
+            category: 'Food',
+            date: new Date('2023-10-12')
         }
     ];
 
     return (
-        <div className=''>
-            <div className='flex justify-between items-center'>
+        <div className='mb-5'>
+            <div className='flex justify-between items-center mb-3'>
                 <p className='font-semibold text-xl'>Your Expensives</p>
-                <select className='rounded-lg px-2 py-1 dark:text-black bg-gray-100 border border-gray-400'>
+                <select className='rounded-lg px-2 py-[5px] dark:text-black bg-gray-100 dark:bg-gray-200 w-1/3 shadow'>
                     <option value="All">All</option>
                     <option value="Investments">Investments</option>
                     <option value="Clothing">Clothing</option>
@@ -50,7 +56,7 @@ const Expenses: React.FC = () => {
             </div>
             <div>
                 {data.map((card: ExpensiveData, index: number) => (
-                    <div key={index} className='grid grid-cols-3 bg-gray-100 dark:text-gray-200 dark:bg-zinc-800 rounded-md p-3 my-3 text-black text-[15px]'>
+                    <div key={index} className='grid grid-cols-3 bg-gray-100 dark:text-gray-100 dark:bg-zinc-800 rounded-md p-3 my-2 text-black text-[15px] shadow'>
                         <div className='col-span-2 flex flex-col gap-1'>
                             <p>Expensive: <strong>${card.expenses}</strong></p>
                             <p>{card.description}</p>
@@ -61,21 +67,7 @@ const Expenses: React.FC = () => {
                         </div>
                     </div>
                 ))}
-                <div className="flex justify-center gap-3 items-center my-4">
-                    <button
-                        type='button'
-                        className="text-gray-100 bg-color-green p-2 rounded-md hover:bg-opacity-80"
-                    >
-                        <FaArrowLeft size={15} />
-                    </button>
-                    <p className='text-gray-600 dark:text-gray-400'>1 of 3</p>
-                    <button
-                        type='button'
-                        className="text-gray-100 bg-color-green p-2 rounded-md hover:bg-opacity-80"
-                    >
-                        <FaArrowRight size={15} />
-                    </button>
-                </div>
+                <ButtonsPagination />
             </div>
         </div>
     );

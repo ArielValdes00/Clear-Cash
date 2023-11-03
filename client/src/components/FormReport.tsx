@@ -2,7 +2,7 @@ import React from 'react';
 
 const FormReport: React.FC = () => {
     return (
-        <form className='mt-3 md:m-0 sm:w-full flex flex-col gap-5 rounded-md p-4 md:p-3 bg-gray-200 dark:bg-black'>
+        <form className='mt-3 md:m-0 sm:w-full flex flex-col gap-4 rounded-md p-4 md:p-3 bg-gray-200 dark:bg-black'>
             <p className='md:text-start text-2xl font-semibold text-black dark:text-gray-200'>Create Report</p>
             <div className='flex flex-col gap-4 md:flex-row'>
                 <div className='flex flex-col gap-1 items-start w-full'>
@@ -13,7 +13,7 @@ const FormReport: React.FC = () => {
                         Month
                     </label>
                     <select
-                        className='bg-gray-100 px-2 py-2 rounded-md text-black w-full'
+                        className='bg-gray-100 dark:bg-zinc-800 px-2 py-2 rounded-md text-black dark:text-gray-200 w-full'
                         id='Month'
                     >
                         <option value="January">January</option>
@@ -41,13 +41,13 @@ const FormReport: React.FC = () => {
                         type='number'
                         id='Mount'
                         placeholder='Example: 14500..'
-                        className='w-full bg-gray-100 px-3 py-2 rounded-md text-gray-600 placeholder:text-gray-500 dark:text-gray-700'
+                        className='w-full bg-gray-100 dark:bg-zinc-800 px-3 py-2 rounded-md text-gray-600 placeholder:text-gray-500 dark:text-gray-200'
                     />
                 </div>
             </div>
             <button
                 type='submit'
-                className='self-center md:self-end w-full cursor-pointer text-gray-100 px-5 py-[6px] md:py-[8px] rounded-md font-extrabold lg:font-bold bg-color-green hover:bg-opacity-80'
+                className='self-center md:self-end w-full cursor-pointer text-gray-100 dark:text-black px-5 py-[6px] md:py-[8px] rounded-md md:font-bold font-semibold bg-gradient-to-r from-color-green to-color-green-dark hover:opacity-80'
             >
                 Create
             </button>
