@@ -8,6 +8,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/api/report', [ReportController::class, 'index']);
-Route::post('/api/report', [ReportController::class, 'store']);
-Route::delete('/api/report/{id}', [ReportController::class, 'destroy']);
+Route::get('/report', [ReportController::class, 'index']);
+Route::post('/report', [ReportController::class, 'store']);
+Route::delete('/report/{id}', [ReportController::class, 'destroy']);
