@@ -2,40 +2,22 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import type { NextRouter } from 'next/router';
 import ButtonsPagination from './misc/ButtonsPagination';
+import { useAppContext } from '@/context/AppContext';
+import { BsFillTrashFill } from 'react-icons/bs';
+import { deleteReport } from '@/routes/reportRoutes';
+import type { Toast } from '@/types/types';
 
-interface TableData {
-    month: string
-    initialMoney: string
-    spentMoney: string
-    currentMoney: string
-    spentPercentage: string
-}
+const BoardReport: React.FC<Toast> = ({ toast }) => {
+    const { report, setReport } = useAppContext();
 
-const BoardReport: React.FC = () => {
     const router: NextRouter = useRouter();
-    const data: TableData[] = [
-        {
-            month: 'January',
-            initialMoney: '$1000',
-            spentMoney: '$20',
-            currentMoney: '$800',
-            spentPercentage: '20%'
-        },
-        {
-            month: 'February',
-            initialMoney: '$800',
-            spentMoney: '$150',
-            currentMoney: '$650',
-            spentPercentage: '18.75%'
-        },
-        {
-            month: 'March',
-            initialMoney: '$650',
-            spentMoney: '$100',
-            currentMoney: '$550',
-            spentPercentage: '15.38%'
-        }
-    ];
+
+    const handleDeleteReport = async (id: number) => {
+        const res = await deleteReport(id);
+        toast.error(res.message);
+        const filterDelete = report.filter(item => item.id !== id);
+        setReport(filterDelete);
+    };
 
     return (
         <div className="w-full rounded-md">
@@ -50,17 +32,25 @@ const BoardReport: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody className="text-end">
-                    {data.map((item: TableData, index: number) => (
+                    {report?.map((item: any) => (
                         <tr
                             onClick={async () => { await router.push(`/dashboard/${item.month}`); }}
-                            key={index}
+                            key={item.id}
                             className="border-b border-black dark:border-gray-100 cursor-pointer bg-gray-100 dark:bg-zinc-800 text-black dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-opacity-80"
                         >
                             <td className="p-2 py-3 md:p-4">{item.month}</td>
-                            <td className="p-2 py-3 md:p-4">{item.initialMoney}</td>
-                            <td className="p-2 py-3 md:p-4 hidden md:block">{item.spentMoney}</td>
-                            <td className="p-2 py-3 md:p-4">{item.currentMoney}</td>
-                            <td className="p-2 py-3 md:p-4 hidden md:block">{item.spentPercentage}</td>
+                            <td className="p-2 py-3 md:p-4">${item.income}</td>
+                            <td className="p-2 py-3 md:p-4 hidden md:block">${!item.spentMoney && 0}</td>
+                            <td className="p-2 py-3 md:p-4">${!item.currentMoney ? item.income : 0}</td>
+                            <td className="p-2 py-3 md:p-4 hidden md:block">{!item.spentPercentage && 0}%</td>
+                            <td
+                                className="p-2 py-3 md:p-4 text-red-600">
+                                <BsFillTrashFill size={20}
+                                    onClick={async (e: any) => {
+                                        e.stopPropagation();
+                                        await handleDeleteReport(item.id);
+                                    }} />
+                            </td>
                         </tr>
                     ))}
                 </tbody>
