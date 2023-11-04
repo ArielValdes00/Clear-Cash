@@ -3,7 +3,7 @@ import type { FormReportState } from '@/types/types';
 
 export const createReport = async (reportData: FormReportState) => {
     try {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`, reportData);
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/report`, reportData);
         return res.data;
     } catch (error) {
         console.log(error);
@@ -12,7 +12,7 @@ export const createReport = async (reportData: FormReportState) => {
 
 export const getReport = async () => {
     try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/report`);
         return res.data;
     } catch (error) {
         console.error(error);
@@ -21,7 +21,7 @@ export const getReport = async () => {
 
 export const deleteReport = async (id: number) => {
     try {
-        const res = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/report/${id}`);
+        const res = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/report/${id}`);
         return res.data;
     } catch (error) {
        console.log(error);
