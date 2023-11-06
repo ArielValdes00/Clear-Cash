@@ -1,5 +1,4 @@
 import React from 'react';
-import ButtonsPagination from './misc/ButtonsPagination';
 
 interface ExpensiveData {
     expenses: number
@@ -67,7 +66,6 @@ const Expenses: React.FC = () => {
                         </div>
                     </div>
                 ))}
-                <ButtonsPagination />
             </div>
         </div>
     );
