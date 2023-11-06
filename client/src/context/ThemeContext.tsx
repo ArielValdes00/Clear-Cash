@@ -1,14 +1,15 @@
 import React, { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 
-interface NavbarProps {
-    handleChangeTheme: () => void
+interface ThemeContextProps {
+    theme: string
     toggleButton: boolean
+    handleChangeTheme: () => void
 }
 
-const ThemeContext = createContext<NavbarProps | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
-export const ThemeProvider: React.FC<{ children: ReactNode, value: NavbarProps }> = ({ children, value }) => {
+export const ThemeProvider: React.FC<{ children: ReactNode, value: ThemeContextProps }> = ({ children, value }) => {
     return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 

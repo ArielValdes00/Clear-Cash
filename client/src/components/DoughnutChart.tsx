@@ -37,7 +37,7 @@ const DoughnutChart: React.FC = () => {
     };
 
     return (
-        <div className='w-[140px] md:w-[200px]'>
+        <div className='w-[140px] md:w-[200px] 2xl:w-[300px]'>
             <Doughnut data={data} />
         </div>
     );

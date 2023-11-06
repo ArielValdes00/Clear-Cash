@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import type { FormReportState, Toast } from '@/types/types';
 import { useAppContext } from '@/context/AppContext';
 import { BiLoaderAlt } from 'react-icons/bi';
+import { isIncomeValid } from '@/utils/validations';
 
 const FormReport: React.FC<Toast> = ({ toast }) => {
     const { setReport } = useAppContext();
     const [loader, setLoader] = useState<boolean>(false);
     const [formReport, setFormReport] = useState<FormReportState>({
-        month: '',
-        income: 0
+        month: 'January',
+        income: null
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -19,11 +20,24 @@ const FormReport: React.FC<Toast> = ({ toast }) => {
     const handleCreateReport = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoader(true);
-        const res = await createReport(formReport);
-        if (res) {
-            toast.success(res.message);
+        try {
+            const incomeValue = formReport.income !== null ? formReport.income.toString() : '';
+            if (!isIncomeValid(incomeValue)) {
+                toast.error('Income is not valid. It cannot be empty, start with 0, or contain symbols.');
+                setLoader(false);
+                return;
+            }
+            const res = await createReport(formReport);
+            console.log(res);
+            if (res) {
+                toast.success(res.message);
+                setLoader(false);
+                setReport(prevReport => [...prevReport, res.report]);
+                setFormReport({ month: formReport.month, income: null });
+            }
+        } catch (error: any) {
+            toast.error(error.message);
             setLoader(false);
-            setReport(prevReport => [...prevReport, res.report]);
         }
     };
 
@@ -69,6 +83,7 @@ const FormReport: React.FC<Toast> = ({ toast }) => {
                         type='number'
                         id='Mount'
                         name='income'
+                        value={formReport.income === null ? '' : formReport.income.toString()}
                         onChange={handleChange}
                         placeholder='Example: 14500..'
                         className='w-full bg-gray-100 dark:bg-zinc-800 px-3 py-2 rounded-md text-gray-600 placeholder:text-gray-500 dark:text-gray-200'
@@ -81,7 +96,7 @@ const FormReport: React.FC<Toast> = ({ toast }) => {
             >
                 {loader
                     ? <BiLoaderAlt
-                        size={20}
+                        size={24}
                         className='animate-spin mx-auto'
                     />
                     : 'Create'

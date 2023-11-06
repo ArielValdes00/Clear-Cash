@@ -1,29 +1,48 @@
 import axios from 'axios';
-import type { FormReportState } from '@/types/types';
+import type { AxiosResponse } from 'axios';
+import type { FormReportState, Report } from '@/types/types';
 
-export const createReport = async (reportData: FormReportState) => {
+interface ApiResponse {
+    message: string
+    report?: Report
+}
+
+export const createReport = async (reportData: FormReportState): Promise<ApiResponse> => {
     try {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`, reportData);
+        const res: AxiosResponse<ApiResponse> = await axios.post(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`,
+            reportData
+        );
         return res.data;
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        throw new Error(
+            error.response?.data?.message
+        );
     }
 };
 
-export const getReport = async () => {
+export const getReport = async (): Promise<ApiResponse> => {
     try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`);
+        const res: AxiosResponse<ApiResponse> = await axios.get(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`
+        );
         return res.data;
-    } catch (error) {
-        console.error(error);
+    } catch (error: any) {
+        throw new Error(
+            error.response?.data?.message
+        );
     }
 };
 
-export const deleteReport = async (id: number) => {
+export const deleteReport = async (id: number): Promise<ApiResponse> => {
     try {
-        const res = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/report/${id}`);
+        const res: AxiosResponse<ApiResponse> = await axios.delete(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/report/${id}`
+        );
         return res.data;
-    } catch (error) {
-       console.log(error);
+    } catch (error: any) {
+        throw new Error(
+            error.response?.data?.message
+        );
     }
 };

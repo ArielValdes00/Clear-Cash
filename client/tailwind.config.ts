@@ -11,6 +11,9 @@ const config: Config = {
         colors: {
             'color-green': '#4BB42D',
             'color-green-dark': '#008000'
+        },
+        screens: {
+            '2xl': '1440px'
         }
     }
   },

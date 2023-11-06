@@ -26,7 +26,8 @@
       "@typescript-eslint/no-misused-promises" : "off",
       "@typescript-eslint/indent": "off",
       "react/prop-types" : "off",
-      "react/react-in-jsx-scope" : "off"
+      "react/react-in-jsx-scope" : "off",
+      "@typescript-eslint/consistent-indexed-object-style" : "off"
     },
     "settings": {
       "react": {

@@ -17,7 +17,7 @@ const DoughnutLabels: React.FC = () => {
             {labels.map((label, index) => (
                 <div key={index} className="flex items-center my-2">
                     <div style={{ backgroundColor: colors[index] }} className="w-4 h-3 mr-2"></div>
-                    <span className="text-sm">{label}</span>
+                    <span className="text-sm 2xl:text-lg">{label}</span>
                 </div>
             ))}
         </div>

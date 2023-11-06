@@ -18,13 +18,17 @@ export default function App({ Component, pageProps }: AppProps) {
         }
     }, [theme]);
 
-    const handleChangeTheme = (): void => {
-        setTheme((prevTheme: string) => prevTheme === 'dark' ? 'light' : 'dark');
-        setToggleButton(!toggleButton);
+    const themeContextValue = {
+        theme,
+        toggleButton,
+        handleChangeTheme: () => {
+            setTheme((prevTheme: string) => prevTheme === 'dark' ? 'light' : 'dark');
+            setToggleButton(!toggleButton);
+        }
     };
 
     return (
-        <ThemeProvider value={{ handleChangeTheme, toggleButton }}>
+        <ThemeProvider value={themeContextValue}>
             <AppProvider>
                 <div className='h-screen bg-gray-200 dark:bg-black flex flex-col'>
                     <Head>
