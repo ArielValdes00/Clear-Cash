@@ -12,6 +12,7 @@ const monthPage = (): JSX.Element => {
     const router: NextRouter = useRouter();
     const { month } = router.query as { month: string };
     const [data, setData] = useState<number>(0);
+    setData(0);
     return (
         <div className='flex mt-6 md:m-0 bg-gray-200 dark:bg-black items-center md:flex-grow dark:text-white'>
             <div className={`${data === 0 ? 'grid md:grid-cols-2 gap-10' : 'w-[41%]'} w-[80%] mx-auto`}>
