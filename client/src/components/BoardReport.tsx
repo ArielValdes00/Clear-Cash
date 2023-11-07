@@ -18,10 +18,9 @@ const BoardReport: React.FC<Toast> = ({ toast }) => {
     const [loader, setLoader] = useState<LoaderState>({});
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [itemsPerPage, setItemsPerPage] = useState(3);
-
     const indexOfLastItem: number = currentPage * itemsPerPage;
     const indexOfFirstItem: number = indexOfLastItem - itemsPerPage;
-    const currentItems: any[] = report.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems: any[] = report?.slice(indexOfFirstItem, indexOfLastItem);
 
     useEffect(() => {
     const handleResize = () => {
@@ -76,7 +75,7 @@ const BoardReport: React.FC<Toast> = ({ toast }) => {
 
     return (
         <>
-            {report.length > 0 && (
+            {report?.length > 0 && (
                 <div className="w-full rounded-md">
                     <table className="table-auto w-full">
                         <thead className="text-end border-black dark:border-gray-100 border-b dark:text-gray-100">

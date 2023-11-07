@@ -2,14 +2,16 @@ import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import type { FormReportState, Report } from '@/types/types';
 
-interface ApiResponse {
+interface ReportResponse {
     message: string
     report?: Report
 }
 
-export const createReport = async (reportData: FormReportState): Promise<ApiResponse> => {
+interface GetReportResponse extends Array<Report> {}
+
+export const createReport = async (reportData: FormReportState): Promise<ReportResponse> => {
     try {
-        const res: AxiosResponse<ApiResponse> = await axios.post(
+        const res: AxiosResponse<ReportResponse> = await axios.post(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`,
             reportData
         );
@@ -21,9 +23,9 @@ export const createReport = async (reportData: FormReportState): Promise<ApiResp
     }
 };
 
-export const getReport = async (): Promise<ApiResponse> => {
+export const getReport = async (): Promise<GetReportResponse> => {
     try {
-        const res: AxiosResponse<ApiResponse> = await axios.get(
+        const res: AxiosResponse<GetReportResponse> = await axios.get(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`
         );
         return res.data;
@@ -34,9 +36,9 @@ export const getReport = async (): Promise<ApiResponse> => {
     }
 };
 
-export const deleteReport = async (id: number): Promise<ApiResponse> => {
+export const deleteReport = async (id: number): Promise<ReportResponse> => {
     try {
-        const res: AxiosResponse<ApiResponse> = await axios.delete(
+        const res: AxiosResponse<ReportResponse> = await axios.delete(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/report/${id}`
         );
         return res.data;
