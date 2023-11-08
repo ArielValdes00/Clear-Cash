@@ -13,7 +13,7 @@ import type { ReportWithExpensives } from '@/types/types';
 const ReportPage: React.FC<{ reportData: ReportWithExpensives }> = ({ reportData }) => {
     const router = useRouter();
     const id = Number(router.query.id);
-    const [expenses, setExpenses] = useState(reportData.expenses);
+    const [expenses, setExpenses] = useState(reportData.expenses || []);
     const month: string = reportData.month;
     const [categories, setCategories] = useState<string[]>([]);
     const [totalExpenses, setTotalExpenses] = useState<number[]>([]);
