@@ -53,7 +53,7 @@ const ReportPage: React.FC<{ reportData: ReportWithExpensives }> = ({ reportData
                             <span className='font-bold'>${totalAmount}</span>
                             <DoughnutLabels categories={categories} />
                         </div>
-                        <DoughnutChart totalExpenses={totalExpenses} totalAmount={totalAmount}/>
+                        <DoughnutChart totalExpenses={totalExpenses} totalAmount={totalAmount} />
                     </div>
                     <ExpenseForm reportId={id} setExpenses={setExpenses} />
                 </div>
@@ -78,14 +78,14 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: { params: ParsedUrlQuery }) {
     if (!params.id) {
-        console.log('params not found');
+        return { props: {} };
     } else {
         const id = parseInt(params.id as string, 10);
 
         const reportData = await getReport(id);
         const month = reportData?.month;
         if (!reportData) {
-            return [];
+            return { props: {} };
         }
 
         return {
