@@ -3,6 +3,7 @@ import type { toast } from 'react-toastify';
 export interface FormReportState {
     month: string
     income: number | null
+    expenses: []
 };
 
 export interface Report {

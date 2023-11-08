@@ -1,17 +1,9 @@
 import BoardReport from '@/components/BoardReport';
 import FormReport from '@/components/FormReport';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import React from 'react';
-import { useTheme } from '@/context/ThemeContext';
 
 const index = (): JSX.Element => {
-    const { theme } = useTheme();
-
-    const customStyle = {
-        width: '400px'
-    };
-
     return (
         <div className='bg-gray-200 dark:bg-black flex flex-grow'>
             <div className='flex flex-col justify-evenly mx-auto w-[90%] lg:w-[70%]'>
@@ -26,18 +18,6 @@ const index = (): JSX.Element => {
                     <BoardReport toast={toast} />
                 </div>
             </div>
-            <ToastContainer
-                style={customStyle}
-                position="bottom-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                draggable
-                theme={theme === 'dark' ? 'dark' : 'light'}
-                pauseOnHover={false}
-            />
         </div>
     );
 };

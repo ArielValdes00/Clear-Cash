@@ -1,16 +1,17 @@
-import { createReport } from '@/routes/reportRoute';
+import { createReport, getReports } from '@/routes/reportRoute';
 import React, { useState } from 'react';
 import type { FormReportState, Toast } from '@/types/types';
 import { useAppContext } from '@/context/AppContext';
 import { BiLoaderAlt } from 'react-icons/bi';
-import { isIncomeValid } from '@/utils/validations';
+import { isValueValid } from '@/utils/validations';
 
 const FormReport: React.FC<Toast> = ({ toast }) => {
     const { setReport } = useAppContext();
     const [loader, setLoader] = useState<boolean>(false);
     const [formReport, setFormReport] = useState<FormReportState>({
         month: 'January',
-        income: null
+        income: null,
+        expenses: []
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -22,17 +23,18 @@ const FormReport: React.FC<Toast> = ({ toast }) => {
         setLoader(true);
         try {
             const incomeValue = formReport.income !== null ? formReport.income.toString() : '';
-            if (!isIncomeValid(incomeValue)) {
+            if (!isValueValid(incomeValue)) {
                 toast.error('Income is not valid. It cannot be empty, start with 0, or contain symbols.');
                 setLoader(false);
                 return;
             }
             const res = await createReport(formReport);
             if (res) {
+                await getReports();
                 toast.success(res.message);
                 setLoader(false);
-                setReport(prevReport => [...prevReport, res]);
-                setFormReport({ month: formReport.month, income: null });
+                setReport(prevReport => [...prevReport, res.report]);
+                setFormReport({ month: formReport.month, income: null, expenses: [] });
             }
         } catch (error: any) {
             toast.error(error.message);

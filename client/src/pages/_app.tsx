@@ -5,8 +5,13 @@ import Navbar from '@/components/Navbar';
 import { ThemeProvider } from '@/context/ThemeContext';
 import Head from 'next/head';
 import { AppProvider } from '@/context/AppContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App({ Component, pageProps }: AppProps) {
+    const customStyle = {
+        width: '400px'
+    };
     const [theme, setTheme] = useState<string>('light');
     const [toggleButton, setToggleButton] = useState<boolean>(false);
 
@@ -37,6 +42,18 @@ export default function App({ Component, pageProps }: AppProps) {
                     </Head>
                     <Navbar />
                     <Component {...pageProps} />
+                    <ToastContainer
+                        style={customStyle}
+                        position="bottom-right"
+                        autoClose={2300}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        draggable
+                        theme={theme === 'dark' ? 'dark' : 'light'}
+                        pauseOnHover={false}
+                    />
                 </div>
             </AppProvider>
         </ThemeProvider>

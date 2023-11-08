@@ -1,8 +1,10 @@
 import { getReports } from '@/routes/reportRoute';
+import type { ReportWithExpensives } from '@/types/types';
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
+import { useRouter } from 'next/router';
+import type { NextRouter } from 'next/router';
 const AppContext = createContext<{
-    report: any[]
+    report: ReportWithExpensives[] | []
     setReport: React.Dispatch<React.SetStateAction<any[]>>
 }>({
     report: [],
@@ -10,6 +12,7 @@ const AppContext = createContext<{
 });
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
+    const router: NextRouter = useRouter();
     const [report, setReport] = useState<any[]>([]);
 
     useEffect(() => {
@@ -18,7 +21,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             setReport(res);
         };
         handleGetReport();
-    }, []);
+    }, [router.asPath]);
 
     return (
         <AppContext.Provider value={{ report, setReport }}>

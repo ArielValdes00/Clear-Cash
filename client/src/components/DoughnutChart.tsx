@@ -15,8 +15,15 @@ ChartJS.register(
     Legend
 );
 
-const DoughnutChart: React.FC = () => {
+interface DoughnutChartProps {
+    totalExpenses: number[]
+    totalAmount: number
+}
+
+const DoughnutChart: React.FC<DoughnutChartProps> = ({ totalExpenses, totalAmount }) => {
     const { toggleButton } = useTheme();
+    const darkModeColor = '#27272a';
+    const lightModeColor = '#3f3f46';
 
     const [colors, setColors] = useState<string[]>(toggleButton ? darkModeColors : lightModeColors);
 
@@ -27,7 +34,7 @@ const DoughnutChart: React.FC = () => {
     const data = {
         datasets: [
             {
-                data: [300, 50, 100],
+                data: totalExpenses,
                 backgroundColor: colors,
                 hoverOffset: 2,
                 borderWidth: 0
@@ -35,6 +42,22 @@ const DoughnutChart: React.FC = () => {
         ],
         redraw: true
     };
+
+    if (!totalExpenses || totalExpenses.length === 0) {
+        return (
+            <div className='w-[140px] md:w-[200px] 2xl:w-[300px]'>
+                <Doughnut data={{
+                    datasets:
+                        [{
+                            data: [totalAmount],
+                            backgroundColor: [toggleButton ? darkModeColor : lightModeColor],
+                            hoverOffset: 2,
+                            borderWidth: 0
+                        }]
+                }} />
+            </div>
+        );
+    }
 
     return (
         <div className='w-[140px] md:w-[200px] 2xl:w-[300px]'>

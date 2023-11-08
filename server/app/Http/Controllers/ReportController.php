@@ -9,10 +9,10 @@ class ReportController extends Controller
 {
     public function index()
     {
-        $reports = Report::all();
-
+        $reports = Report::with('expenses')->get();
         return response()->json($reports);
     }
+
 
     public function store(Request $request)
     {
@@ -26,8 +26,11 @@ class ReportController extends Controller
         $report->income = $request->income;
         $report->save();
 
+        $report = Report::with('expenses')->find($report->id);
+
         return response()->json(['message' => 'Report created successfully', 'report' => $report], 201);
     }
+
 
     public function show($id)
     {

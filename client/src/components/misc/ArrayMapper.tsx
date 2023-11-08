@@ -3,13 +3,15 @@ import React from 'react';
 interface ArrayMapperProps<T> {
     data: T[]
     children: (item: T) => React.ReactNode
+    textPosition: string
+    as: 'tbody' | 'div'
 }
 
-function ArrayMapper<T>({ data, children }: ArrayMapperProps<T>) {
+function ArrayMapper<T>({ data, children, textPosition, as: Component }: ArrayMapperProps<T>) {
     return (
-        <tbody className="text-end">
-            {data.map((item) => children(item))}
-        </tbody>
+        <Component className={textPosition}>
+            {data.map((item, index) => <React.Fragment key={index}>{children(item)}</React.Fragment>)}
+        </Component>
     );
 }
 
