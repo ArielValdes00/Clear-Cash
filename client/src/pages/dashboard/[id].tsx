@@ -83,9 +83,9 @@ export async function getStaticProps({ params }: { params: ParsedUrlQuery }) {
         const id = parseInt(params.id as string, 10);
 
         const reportData = await getReport(id);
-        const month = reportData.month;
-        if (!reportData.expenses) {
-            reportData.expenses = [];
+        const month = reportData?.month;
+        if (!reportData) {
+            return [];
         }
 
         return {
