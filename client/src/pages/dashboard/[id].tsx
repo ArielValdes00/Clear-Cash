@@ -24,7 +24,7 @@ const ReportPage: React.FC<{ reportData: ReportWithExpensives }> = ({ reportData
         const remainingAmount = reportData.income - totalSpend;
         setTotalAmount(remainingAmount);
         let newExpensesByCategory: { [key: string]: number } = {};
-        newExpensesByCategory = expenses.reduce((acc: { [key: string]: number }, curr) => {
+        newExpensesByCategory = expenses?.reduce((acc: { [key: string]: number }, curr) => {
             if (!acc[curr.category]) {
                 acc[curr.category] = 0;
             }
@@ -38,7 +38,7 @@ const ReportPage: React.FC<{ reportData: ReportWithExpensives }> = ({ reportData
 
     return (
         <div className='flex mt-6 md:m-0 bg-gray-200 dark:bg-black items-center md:flex-grow dark:text-white'>
-            <div className={`${expenses.length > 0 ? 'grid lg:grid-cols-2 gap-10 w-[80%] lg:w-[85%] xl:w-[80%]' : 'w-[80%] md:w-[60%] lg:w-[40%]'} mx-auto`}>
+            <div className={`${expenses?.length > 0 ? 'grid lg:grid-cols-2 gap-10 w-[80%] lg:w-[85%] xl:w-[80%]' : 'w-[80%] md:w-[60%] lg:w-[40%]'} mx-auto`}>
                 <div className='flex flex-col gap-2'>
                     <div className='flex items-center gap-1 text-gray-700 dark:text-gray-400 text-sm'>
                         <Link href='/dashboard' className='flex items-center gap-1'>
