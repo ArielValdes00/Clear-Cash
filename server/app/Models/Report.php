@@ -9,4 +9,9 @@ class Report extends Model
 {
     use HasFactory;
     protected $fillable = ['month', 'income'];
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
 }

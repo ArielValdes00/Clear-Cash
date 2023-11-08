@@ -1,4 +1,4 @@
-import { createReport } from '@/routes/reportRoutes';
+import { createReport } from '@/routes/reportRoute';
 import React, { useState } from 'react';
 import type { FormReportState, Toast } from '@/types/types';
 import { useAppContext } from '@/context/AppContext';
@@ -28,11 +28,10 @@ const FormReport: React.FC<Toast> = ({ toast }) => {
                 return;
             }
             const res = await createReport(formReport);
-            console.log(res);
             if (res) {
                 toast.success(res.message);
                 setLoader(false);
-                setReport(prevReport => [...prevReport, res.report]);
+                setReport(prevReport => [...prevReport, res]);
                 setFormReport({ month: formReport.month, income: null });
             }
         } catch (error: any) {

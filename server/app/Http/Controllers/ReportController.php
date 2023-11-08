@@ -29,16 +29,25 @@ class ReportController extends Controller
         return response()->json(['message' => 'Report created successfully', 'report' => $report], 201);
     }
 
+    public function show($id)
+    {
+        $report = Report::with('expenses')->find($id);
+
+        if (!$report) {
+            return response()->json(['message' => 'Report not found'], 404);
+        }
+
+        return response()->json($report);
+    }
+
     public function destroy($id)
     {
         $report = Report::find($id);
 
-        if ($report) {
-            $report->delete();
-
-            return response()->json(['message' => 'Report deleted successfully'], 200);
-        } else {
+        if (!$report) {
             return response()->json(['message' => 'Report not found'], 404);
         }
+        $report->delete();
+        return response()->json(['message' => 'Report deleted successfully'], 200);
     }
 }

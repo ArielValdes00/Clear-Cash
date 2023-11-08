@@ -1,13 +1,6 @@
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
-import type { FormReportState, Report } from '@/types/types';
-
-interface ReportResponse {
-    message: string
-    report?: Report
-}
-
-interface GetReportResponse extends Array<Report> {}
+import type { FormReportState, ReportResponse } from '@/types/types';
 
 export const createReport = async (reportData: FormReportState): Promise<ReportResponse> => {
     try {
@@ -23,9 +16,9 @@ export const createReport = async (reportData: FormReportState): Promise<ReportR
     }
 };
 
-export const getReport = async (): Promise<GetReportResponse> => {
+export const getReports = async () => {
     try {
-        const res: AxiosResponse<GetReportResponse> = await axios.get(
+        const res = await axios.get(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`
         );
         return res.data;
@@ -33,6 +26,15 @@ export const getReport = async (): Promise<GetReportResponse> => {
         throw new Error(
             error.response?.data?.message
         );
+    }
+};
+
+export const getReport = async (id: number) => {
+    try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/report/${id}`);
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message);
     }
 };
 

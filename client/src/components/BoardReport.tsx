@@ -4,7 +4,7 @@ import type { NextRouter } from 'next/router';
 import ButtonsPagination from './misc/ButtonsPagination';
 import { useAppContext } from '@/context/AppContext';
 import { BsFillTrashFill } from 'react-icons/bs';
-import { deleteReport } from '@/routes/reportRoutes';
+import { deleteReport } from '@/routes/reportRoute';
 import type { Toast } from '@/types/types';
 import { BiLoaderAlt } from 'react-icons/bi';
 import ArrayMapper from './misc/ArrayMapper';
@@ -91,7 +91,7 @@ const BoardReport: React.FC<Toast> = ({ toast }) => {
                             {(item: any) => (
                                 <tr
                                     onClick={async () => {
-                                        await router.push(`/dashboard/${item.month}`);
+                                        await router.push(`/dashboard/${item.id}`);
                                     }}
                                     key={item.id}
                                     className="border-b border-black dark:border-gray-100 cursor-pointer bg-gray-100 dark:bg-zinc-800 text-black dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-opacity-80"
