@@ -13,15 +13,15 @@ import type { ReportWithExpensives } from '@/types/types';
 const ReportPage: React.FC<{ reportData: ReportWithExpensives }> = ({ reportData }) => {
     const router = useRouter();
     const id = Number(router.query.id);
-    const [expenses, setExpenses] = useState(reportData.expenses || []);
-    const month: string = reportData.month;
+    const [expenses, setExpenses] = useState(reportData?.expenses || []);
+    const month: string = reportData?.month;
     const [categories, setCategories] = useState<string[]>([]);
     const [totalExpenses, setTotalExpenses] = useState<number[]>([]);
     const [totalAmount, setTotalAmount] = useState<any>(0);
 
     useEffect(() => {
         const totalSpend = expenses?.reduce((total: any, expense: any) => total + Number(expense.amount), 0);
-        const remainingAmount = reportData.income - totalSpend;
+        const remainingAmount = reportData?.income - totalSpend;
         setTotalAmount(remainingAmount);
         let newExpensesByCategory: { [key: string]: number } = {};
         newExpensesByCategory = expenses?.reduce((acc: { [key: string]: number }, curr) => {
@@ -78,14 +78,16 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: { params: ParsedUrlQuery }) {
     if (!params.id) {
-        return { props: {} };
+        console.log('params not found');
+        return { props: { error: 'params not found' } };
     } else {
         const id = parseInt(params.id as string, 10);
 
         const reportData = await getReport(id);
         const month = reportData?.month;
         if (!reportData) {
-            return { props: {} };
+            console.log('report not found');
+            return { props: { error: 'report not found' } };
         }
 
         return {
