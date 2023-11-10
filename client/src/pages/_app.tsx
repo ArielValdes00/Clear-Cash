@@ -37,7 +37,11 @@ export default function App({ Component, pageProps }: AppProps) {
             <AppProvider>
                 <div className='h-screen bg-gray-200 dark:bg-black flex flex-col'>
                     <Head>
-                        <title>Clear Cash</title>
+                        <title>Clear Cash - Expense Manager</title>
+                        <meta name="description" content="Effortlessly manage your expenses with Clear Cash. Register, create monthly reports, and visualize your expenses in interactive charts." />
+                        <meta name="keywords" content="expense manager, monthly reports, expense tracking, personal finance, doughnut chart, dark mode, light mode" />
+                        <meta name="author" content="Ariel Valdés" />
+                        <meta name="copyright" content="© 2023 Ariel Valdés" />
                         <link rel="icon" href="https://img.icons8.com/4BB42D/cheap-2.png" />
                     </Head>
                     <Navbar />

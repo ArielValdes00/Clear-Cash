@@ -2,13 +2,14 @@ import { deleteExpense } from '@/routes/expenseRoute';
 import type { Expense } from '@/types/types';
 import React, { useState, useEffect } from 'react';
 import { SlOptionsVertical } from 'react-icons/sl';
-import { BiLoaderAlt } from 'react-icons/bi';
 import ArrayMapper from './misc/ArrayMapper';
 import ButtonsPagination from './misc/ButtonsPagination';
+import DropdownMenu from './misc/DropdownMenu';
+import useMenuHandling from '@/utils/useMenuHandling';
 
 const Expenses: React.FC<{ reportData: Expense[], setExpenses: React.Dispatch<React.SetStateAction<Expense[]>> }> =
     ({ reportData, setExpenses }) => {
-        const [menuOpen, setMenuOpen] = useState<number>(0);
+        const { menuOpen, toggleMenu } = useMenuHandling<number>({ initialMenuState: null });
         const [loader, setLoader] = useState<boolean>(false);
         const [currentPage, setCurrentPage] = useState<number>(1);
         const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -36,32 +37,30 @@ const Expenses: React.FC<{ reportData: Expense[], setExpenses: React.Dispatch<Re
             };
         }, []);
 
-        const toggleMenu = (cardId: number) => {
-            if (menuOpen === cardId) {
-                setMenuOpen(0);
-            } else {
-                setMenuOpen(cardId);
-            }
-        };
-
         const handlePageChange = (newPage: number) => {
             setCurrentPage(newPage);
         };
 
-        const handleDeleteExpense = async (id: number) => {
+        const handleDeleteExpense = async (e: React.MouseEvent<HTMLDivElement>, id: number) => {
             setLoader(true);
             const res = await deleteExpense(id);
             if (res) {
                 const filteredData = reportData.filter(item => item.id !== id);
                 setExpenses(filteredData);
                 setLoader(false);
+                if (currentItems.length <= 1 && currentPage > 1) {
+                    handlePageChange(currentPage - 1);
+                }
             }
         };
+
         return (
-            <div className='mb-5 w-full'>
+            <div className='mb-5 w-full select-none'>
                 <div className='flex justify-between items-center mb-3'>
                     <p className='font-semibold text-xl'>Your Expensives</p>
-                    <select className='rounded-lg px-2 py-[5px] dark:text-black bg-gray-100 dark:bg-gray-200 w-1/3 shadow'>
+                    <select
+                        aria-label='Filter Categories'
+                        className='rounded-lg px-2 py-[5px] dark:text-black bg-gray-100 dark:bg-gray-200 w-1/3 shadow'>
                         <option value="All">All</option>
                         <option value="Investments">Investments</option>
                         <option value="Clothing">Clothing</option>
@@ -89,25 +88,25 @@ const Expenses: React.FC<{ reportData: Expense[], setExpenses: React.Dispatch<Re
                                         <div className='flex gap-1'>
                                             <SlOptionsVertical
                                                 size={18}
-                                                onClick={() => { toggleMenu(card.id); }}
+                                                tabIndex={0}
+                                                onKeyDown={(e: any) => {
+                                                    if (e.key === 'Enter') {
+                                                        e.preventDefault();
+                                                        toggleMenu(e, card.id);
+                                                    }
+                                                }}
+                                                onClick={(e: React.MouseEvent<HTMLDivElement>) => { toggleMenu(e, card.id); }}
                                                 className='mt-[0.4rem] cursor-pointer text-zinc-800 dark:text-gray-200 ml-auto'
                                             />
                                         </div>
                                         {menuOpen === card.id && (
-                                            <div className='absolute right-2 mt-[.2rem] bg-gray-100 dark:bg-zinc-800 border border-gray-400 rounded-l-lg rounded-br-lg shadow-md'>
-                                                <ul>
-                                                    <li
-                                                        onClick={async () => {
-                                                            await handleDeleteExpense(card.id);
-                                                        }}
-                                                        className='w-24 text-center py-[.4rem] text-sm hover:bg-gray-200 dark:hover:bg-black cursor-pointer rounded-l-lg rounded-br-lg'>
-                                                        {loader
-                                                            ? <BiLoaderAlt size={20} className="mx-auto animate-spin" />
-                                                            : 'Delete'
-                                                        }
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            <DropdownMenu
+                                                className='right-2 close-menu'
+                                                item={card}
+                                                handleDelete={handleDeleteExpense}
+                                                loader={loader}
+                                                toggleMenu={toggleMenu}
+                                            />
                                         )}
                                     </div>
                                 </div>

@@ -23,6 +23,7 @@ const ButtonsPagination: React.FC<ButtonsPaginationProps> = ({
                 className="text-gray-100 dark:text-black bg-gradient-to-r from-color-green to-color-green-dark p-2 rounded-md hover:opacity-80"
                 onClick={() => { handlePageChange(currentPage - 1); }}
                 disabled={currentPage <= 1}
+                aria-label="Prev Page"
             >
                 <FaArrowLeft size={15} />
             </button>
@@ -34,6 +35,7 @@ const ButtonsPagination: React.FC<ButtonsPaginationProps> = ({
                 className="text-gray-100 dark:text-black bg-gradient-to-r from-color-green to-color-green-dark p-2 rounded-md hover:opacity-80"
                 onClick={() => { handlePageChange(currentPage + 1); }}
                 disabled={currentPage >= totalPages}
+                aria-label="Next Page"
             >
                 <FaArrowRight size={15} />
             </button>

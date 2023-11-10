@@ -3,21 +3,26 @@ import { useRouter } from 'next/router';
 import type { NextRouter } from 'next/router';
 import ButtonsPagination from './misc/ButtonsPagination';
 import { useAppContext } from '@/context/AppContext';
-import { BsFillTrashFill } from 'react-icons/bs';
 import { deleteReport } from '@/routes/reportRoute';
-import type { ReportWithExpensives, Toast } from '@/types/types';
-import { BiLoaderAlt } from 'react-icons/bi';
+import type { ReportWithExpensives } from '@/types/types';
 import ArrayMapper from './misc/ArrayMapper';
 import { useTheme } from '@/context/ThemeContext';
+import type { toast } from 'react-toastify';
+import DropdownMenu from './misc/DropdownMenu';
+import { SlOptionsVertical } from 'react-icons/sl';
+import useMenuHandling from '@/utils/useMenuHandling';
 
-interface LoaderState {
-    [key: number]: boolean
+interface BoardProps {
+    toast: typeof toast
+    setCurrentMoney: React.Dispatch<React.SetStateAction<number>>
 }
 
-const BoardReport: React.FC<Toast> = ({ toast }) => {
+const BoardReport: React.FC<BoardProps> = ({ toast, setCurrentMoney }) => {
     const { report, setReport } = useAppContext();
     const { theme } = useTheme();
-    const [loader, setLoader] = useState<LoaderState>({});
+    const router: NextRouter = useRouter();
+    const { menuOpen, toggleMenu } = useMenuHandling<number>({ initialMenuState: null });
+    const [loader, setLoader] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [itemsPerPage, setItemsPerPage] = useState(3);
     const indexOfLastItem: number = currentPage * itemsPerPage;
@@ -48,14 +53,9 @@ const BoardReport: React.FC<Toast> = ({ toast }) => {
         setCurrentPage(newPage);
     };
 
-    const router: NextRouter = useRouter();
-
-    const handleDeleteReport = async (id: number) => {
-        setLoader((prevLoader) => ({
-            ...prevLoader,
-            [id]: true
-        }));
-
+    const handleDeleteReport = async (e: React.MouseEvent<HTMLDivElement>, id: number) => {
+        e.stopPropagation();
+        setLoader(true);
         try {
             const res = await deleteReport(id);
             if (res) {
@@ -69,17 +69,28 @@ const BoardReport: React.FC<Toast> = ({ toast }) => {
         } catch (error) {
             console.error(error);
         } finally {
-            setLoader((prevLoader) => ({
-                ...prevLoader,
-                [id]: false
-            }));
+            setLoader(false);
         }
     };
+
+    const totalCurrent: any = report.reduce((total, item) => {
+        const totalSpent = item.expenses?.reduce((total: any, expense: any) => total + Number(expense.amount), 0);
+        const current = item.income - totalSpent;
+        return total + current;
+    }, 0);
+
+    const getColor = (percentage: number, theme: string) => {
+        const hue: any = ((1 - percentage / 100) * 120).toString(10);
+        return theme === 'dark' ? ['hsl(', hue, ',100%,50%)'].join('') : ['hsl(', hue, ',100%,40%)'].join('');
+    };
+    useEffect(() => {
+        setCurrentMoney(totalCurrent);
+    }, [currentItems]);
 
     return (
         <>
             {report?.length > 0 && (
-                <div className="w-full rounded-md">
+                <div className="w-full rounded-md select-none">
                     <table className="table-auto w-full">
                         <thead className="text-end border-black dark:border-gray-100 border-b dark:text-gray-100">
                             <tr>
@@ -91,15 +102,18 @@ const BoardReport: React.FC<Toast> = ({ toast }) => {
                             </tr>
                         </thead>
                         <ArrayMapper data={currentItems} textPosition='text-end' as='tbody'>
-                            {(item: any) => {
+                            {(item: ReportWithExpensives) => {
                                 const totalSpent = item.expenses?.reduce((total: any, expense: any) => total + Number(expense.amount), 0);
                                 const percentageSpent = Math.round((totalSpent / item.income) * 100);
-                                const getColor = (percentage: number, theme: string) => {
-                                    const hue: any = ((1 - percentage / 100) * 120).toString(10);
-                                    return theme === 'dark' ? ['hsl(', hue, ',100%,50%)'].join('') : ['hsl(', hue, ',100%,40%)'].join('');
-                                };
                                 return (
                                     <tr
+                                        tabIndex={0}
+                                        onKeyDown={(e: any) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                router.push(`/dashboard/${item.id}`);
+                                            }
+                                        }}
                                         onClick={async () => {
                                             await router.push(`/dashboard/${item.id}`);
                                         }}
@@ -113,32 +127,44 @@ const BoardReport: React.FC<Toast> = ({ toast }) => {
                                         <td className="p-2 py-3 md:p-4 hidden md:block font-semibold"
                                             style={{ color: getColor(percentageSpent, theme) }}
                                         >{percentageSpent}%</td>
-                                        <td className="p-2 py-3 md:p-4">
-                                            {loader[item.id]
-                                                ? (
-                                                    <BiLoaderAlt size={20} className="ml-auto animate-spin" />
-                                                )
-                                                : (
-                                                    <BsFillTrashFill
-                                                        size={20}
-                                                        className="ml-auto text-red-600 hover:text-red-700"
-                                                        onClick={async (e: any) => {
+                                        <td className="p-2 py-3 md:p-4 relative">
+                                            <div>
+                                                <SlOptionsVertical
+                                                    size={18}
+                                                    tabIndex={0}
+                                                    onKeyDown={(e: any) => {
+                                                        if (e.key === 'Enter') {
+                                                            e.preventDefault();
                                                             e.stopPropagation();
-                                                            await handleDeleteReport(item.id);
-                                                        }}
-                                                    />
-                                                )}
+                                                            toggleMenu(e, item.id);
+                                                        }
+                                                    }}
+                                                    onClick={(e: any) => { toggleMenu(e, item.id); }}
+                                                    className='mt-[0.4rem] cursor-pointer text-zinc-800 dark:text-gray-200 ml-auto'
+                                                />
+                                            </div>
+                                            {menuOpen === item.id && (
+                                                <DropdownMenu
+                                                    className='right-4 md:right-6 close-menu'
+                                                    item={item}
+                                                    handleDelete={handleDeleteReport}
+                                                    loader={loader}
+                                                    toggleMenu={toggleMenu}
+                                                />
+                                            )}
                                         </td>
                                     </tr>
                                 );
                             }}
                         </ArrayMapper>
                     </table>
-                    <ButtonsPagination
-                        currentPage={currentPage}
-                        totalPages={Math.ceil(report.length / itemsPerPage)}
-                        onPageChange={handlePageChange}
-                    />
+                    {reportReverse.length > 3 && (
+                        <ButtonsPagination
+                            currentPage={currentPage}
+                            totalPages={Math.ceil(report.length / itemsPerPage)}
+                            onPageChange={handlePageChange}
+                        />
+                    )}
                 </div>
             )}
         </>

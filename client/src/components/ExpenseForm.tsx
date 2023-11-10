@@ -58,6 +58,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ reportId, setExpenses }) => {
                     value={formExpense.description}
                     className='resize-none rounded-md p-2 2xl:p-4 h-full bg-gray-100 dark:bg-zinc-800 shadow'
                     placeholder='Description'
+                    aria-label="Expense description"
                 />
                 <div className='flex flex-col gap-2'>
                     <input
@@ -67,10 +68,12 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ reportId, setExpenses }) => {
                         value={formExpense.amount === null ? '' : formExpense.amount.toString()}
                         className='rounded-md p-2 py-3 2xl:p-4 bg-gray-100 dark:bg-zinc-800 shadow'
                         placeholder='Amount Spent'
+                        aria-label="Amount Spent"
                     />
                     <select
                         onChange={handlechange}
                         name='category'
+                        aria-label="Expense Category"
                         className='rounded-lg p-2 py-3 2xl:p-4 dark:text-gray-200 bg-gray-100 dark:bg-zinc-800 shadow'
                     >
                         <option value="Investments">Investments</option>

@@ -57,6 +57,7 @@ const FormReport: React.FC<Toast> = ({ toast }) => {
                         className='bg-gray-100 dark:bg-zinc-800 px-2 py-2 rounded-md text-black dark:text-gray-200 w-full'
                         id='Month'
                         name='month'
+                        aria-label='Select Month'
                         onChange={handleChange}
                     >
                         <option value="January">January</option>
@@ -86,6 +87,7 @@ const FormReport: React.FC<Toast> = ({ toast }) => {
                         name='income'
                         value={formReport.income === null ? '' : formReport.income.toString()}
                         onChange={handleChange}
+                        aria-label='Starting Money'
                         placeholder='Example: 14500..'
                         className='w-full bg-gray-100 dark:bg-zinc-800 px-3 py-2 rounded-md text-gray-600 placeholder:text-gray-500 dark:text-gray-200'
                     />
@@ -93,6 +95,7 @@ const FormReport: React.FC<Toast> = ({ toast }) => {
             </div>
             <button
                 type='submit'
+                aria-label={loader ? 'Creating Report...' : 'Create Report'}
                 className='self-center md:self-end w-full cursor-pointer text-gray-100 dark:text-black px-5 py-[6px] md:py-[8px] rounded-md md:font-bold font-semibold bg-gradient-to-r from-color-green to-color-green-dark hover:opacity-80'
             >
                 {loader
