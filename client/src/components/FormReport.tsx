@@ -1,4 +1,4 @@
-import { createReport, getReports } from '@/routes/reportRoute';
+import { createReport } from '@/routes/reportRoute';
 import React, { useState } from 'react';
 import type { FormReportState, Toast } from '@/types/types';
 import { useAppContext } from '@/context/AppContext';
@@ -7,11 +7,13 @@ import { isValueValid } from '@/utils/validations';
 
 const FormReport: React.FC<Toast> = ({ toast }) => {
     const { setReport } = useAppContext();
+    const { user } = useAppContext();
     const [loader, setLoader] = useState<boolean>(false);
     const [formReport, setFormReport] = useState<FormReportState>({
         month: 'January',
         income: null,
-        expenses: []
+        expenses: [],
+        user_id: user?.id
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -28,13 +30,14 @@ const FormReport: React.FC<Toast> = ({ toast }) => {
                 setLoader(false);
                 return;
             }
-            const res = await createReport(formReport);
-            if (res) {
-                await getReports();
-                toast.success(res.message);
-                setLoader(false);
-                setReport(prevReport => [...prevReport, res.report]);
-                setFormReport({ month: formReport.month, income: null, expenses: [] });
+            if (user) {
+                const res = await createReport(formReport);
+                if (res) {
+                    toast.success(res.message);
+                    setLoader(false);
+                    setReport(prevReport => [...prevReport, res.report]);
+                    setFormReport({ month: formReport.month, income: null, expenses: [], user_id: user?.id });
+                }
             }
         } catch (error: any) {
             toast.error(error.message);

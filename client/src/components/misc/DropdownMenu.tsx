@@ -25,7 +25,7 @@ const DropdownMenu: React.FC<ExpenseCardProps> = ({ handleDelete, loader, item, 
                         await handleDelete(e, item.id);
                         toggleMenu(e, item.id);
                     }}
-                    className='w-24 border-2 text-center py-[.4rem] text-sm hover:bg-gray-200 dark:hover:bg-black cursor-pointer rounded-l-lg rounded-br-lg'>
+                    className='w-24 text-center py-[.4rem] text-sm hover:bg-gray-200 dark:hover:bg-black cursor-pointer rounded-l-lg rounded-br-lg'>
                     {loader
                         ? <BiLoaderAlt size={20} className="mx-auto animate-spin" />
                         : 'Delete'

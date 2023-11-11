@@ -9,6 +9,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { getReport, getReports } from '@/routes/reportRoute';
 import type { ParsedUrlQuery } from 'querystring';
 import type { ReportWithExpensives } from '@/types/types';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 const ReportPage: React.FC<{ reportData: ReportWithExpensives }> = ({ reportData }) => {
     const router = useRouter();
@@ -37,29 +38,31 @@ const ReportPage: React.FC<{ reportData: ReportWithExpensives }> = ({ reportData
     }, [expenses]);
 
     return (
-        <div className='flex mt-6 md:m-0 bg-gray-200 dark:bg-black items-center md:flex-grow dark:text-white'>
-            <div className={`${expenses?.length > 0 ? 'grid lg:grid-cols-2 gap-10 md:w-[60%] lg:w-[85%] xl:w-[80%]' : 'md:w-[60%] lg:w-[40%]'} w-[90%] mx-auto`}>
-                <div className='flex flex-col gap-2'>
-                    <div className='flex items-center gap-1 text-gray-700 dark:text-gray-400 text-sm'>
-                        <Link href='/dashboard' className='flex items-center gap-1'>
-                            <FaArrowLeft size={11} />
-                            <strong className='underline'>Back</strong>
-                        </Link>
-                    </div>
-                    <h3 className='text-2xl font-semibold mt-2'>{month} Report</h3>
-                    <div className='flex justify-between py-2'>
-                        <div className='2xl:text-2xl'>
-                            <p>Current Money:</p>
-                            <span className='font-bold'>${totalAmount}</span>
-                            <DoughnutLabels categories={categories} />
+        <ProtectedRoute>
+            <div className='flex mt-6 md:m-0 bg-gray-200 dark:bg-black items-center md:flex-grow dark:text-white'>
+                <div className={`${expenses?.length > 0 ? 'grid lg:grid-cols-2 gap-10 md:w-[60%] lg:w-[85%] xl:w-[80%]' : 'md:w-[60%] lg:w-[40%]'} w-[90%] mx-auto`}>
+                    <div className='flex flex-col gap-2'>
+                        <div className='flex items-center gap-1 text-gray-700 dark:text-gray-400 text-sm'>
+                            <Link href='/dashboard' className='flex items-center gap-1'>
+                                <FaArrowLeft size={11} />
+                                <strong className='underline'>Back</strong>
+                            </Link>
                         </div>
-                        <DoughnutChart totalExpenses={totalExpenses} totalAmount={totalAmount} />
+                        <h3 className='text-2xl font-semibold mt-2'>{month} Report</h3>
+                        <div className='flex justify-between py-2'>
+                            <div className='2xl:text-2xl'>
+                                <p>Current Money:</p>
+                                <span className='font-bold'>${totalAmount}</span>
+                                <DoughnutLabels categories={categories} />
+                            </div>
+                            <DoughnutChart totalExpenses={totalExpenses} totalAmount={totalAmount} />
+                        </div>
+                        <ExpenseForm reportId={id} setExpenses={setExpenses} />
                     </div>
-                    <ExpenseForm reportId={id} setExpenses={setExpenses} />
+                    {expenses.length > 0 && <Expenses setExpenses={setExpenses} reportData={expenses} />}
                 </div>
-                {expenses.length > 0 && <Expenses setExpenses={setExpenses} reportData={expenses} />}
             </div>
-        </div>
+        </ProtectedRoute>
     );
 };
 

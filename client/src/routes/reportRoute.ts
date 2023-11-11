@@ -16,11 +16,9 @@ export const createReport = async (reportData: FormReportState): Promise<ReportR
     }
 };
 
-export const getReports = async () => {
+export const getReports = async (id: any) => {
     try {
-        const res = await axios.get(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`
-        );
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/report`, { params: { user_id: id } });
         return res.data;
     } catch (error: any) {
         throw new Error(

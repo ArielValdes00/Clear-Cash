@@ -4,6 +4,7 @@ export interface FormReportState {
     month: string
     income: number | null
     expenses: []
+    user_id: number | undefined
 };
 
 export interface Report {
@@ -55,6 +56,26 @@ export interface ReportWithExpensives {
     income: number
     month: string
     expenses: Expense[]
+    created_at: string
+    updated_at: string
+}
+
+export interface FormRegister {
+    name: string
+    email: string
+    password: string
+}
+
+export interface FormLogin {
+    email: string
+    password: string
+}
+
+export interface User {
+    id: number
+    name: string
+    email: string
+    email_verified_at: string | null
     created_at: string
     updated_at: string
 }

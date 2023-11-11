@@ -7,23 +7,24 @@ use App\Models\Report;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $reports = Report::with('expenses')->get();
+        $userId = $request->user_id;
+        $reports = Report::with('expenses')->where('user_id', $userId)->get();
         return response()->json($reports);
     }
-
-
     public function store(Request $request)
     {
         $request->validate([
             'month' => 'required',
             'income' => 'required',
+            'user_id' => 'required',
         ]);
 
         $report = new Report;
         $report->month = $request->month;
         $report->income = $request->income;
+        $report->user_id = $request->user_id;
         $report->save();
 
         $report = Report::with('expenses')->find($report->id);
