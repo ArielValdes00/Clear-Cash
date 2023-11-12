@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { FormLogin, Toast } from '@/types/types';
 import { login } from '@/routes/authRoute';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 const Login: React.FC<Toast> = ({ toast }) => {
     const router = useRouter();
@@ -20,24 +21,17 @@ const Login: React.FC<Toast> = ({ toast }) => {
             const res = await login(formLogin);
             if (res) {
                 console.log(res);
-                localStorage.setItem('token', JSON.stringify(res.access_token));
-                localStorage.setItem('user', JSON.stringify(res.user));
+                Cookies.set('token', res.access_token);
+                Cookies.set('user', JSON.stringify(res.user));
                 toast.success(res.message);
-                router.push('/dashboard');
+                if (res.user.name) {
+                    router.push('/dashboard');
+                }
             }
         } catch (error: any) {
             toast.error(error.message);
         }
     };
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const token = localStorage.getItem('token');
-            if (token) {
-                router.push('/dashboard');
-            }
-        }
-    }, []);
 
     return (
         <form onSubmit={handleSubmit} className='flex flex-col gap-4 p-3'>

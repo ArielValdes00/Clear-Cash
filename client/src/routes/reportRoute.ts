@@ -27,7 +27,7 @@ export const getReports = async (id: any) => {
     }
 };
 
-export const getReport = async (id: number) => {
+export const getReport = async (id: string) => {
     try {
         const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/report/${id}`);
         return res.data;

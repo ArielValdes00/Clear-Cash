@@ -18,3 +18,21 @@ export const login = async (formLogin: FormLogin) => {
         throw new Error(error.response?.data?.message);
     }
 };
+
+export const getUsers = async () => {
+    try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`);
+        return res.data.users;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message);
+    }
+};
+
+export const getUser = async (id: any) => {
+    try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`);
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message);
+    }
+};

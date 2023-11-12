@@ -3,6 +3,7 @@ import type { ReportWithExpensives, User } from '@/types/types';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import type { NextRouter } from 'next/router';
+import Cookies from 'js-cookie';
 const AppContext = createContext<{
     report: ReportWithExpensives[] | []
     setReport: React.Dispatch<React.SetStateAction<any[]>>
@@ -31,7 +32,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }, [router.asPath, user]);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
+        const storedUser = Cookies.get('user');
         if (storedUser) {
             const user = JSON.parse(storedUser) as User;
             setUser(user);
