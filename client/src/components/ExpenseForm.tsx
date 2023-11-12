@@ -3,7 +3,7 @@ import type { ExpenseFormProps, FormExpenseState } from '@/types/types';
 import { isDescriptionValid, isValueValid } from '@/utils/validations';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { BiLoaderAlt } from 'react-icons/bi';
+import LoadingButton from './misc/LoadingButton';
 
 const ExpenseForm: React.FC<ExpenseFormProps> = ({ reportId, setExpenses }) => {
     const [loader, setLoader] = useState<boolean>(false);
@@ -89,18 +89,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ reportId, setExpenses }) => {
                     </select>
                 </div>
             </div>
-            <button
-                type='submit'
-                className='w-full text-gray-100 dark:text-black text-sm font-semibold bg-gradient-to-r from-color-green to-color-green-dark px-4 py-2 2xl:py-4 2xl:text-lg rounded-md hover:opacity-80'
-            >
-                {loader
-                    ? <BiLoaderAlt
-                        size={20}
-                        className='animate-spin mx-auto'
-                    />
-                    : 'Create'
-                }
-            </button>
+            <LoadingButton
+                isLoading={loader}
+                label="Create"
+            />
         </form>
     );
 };

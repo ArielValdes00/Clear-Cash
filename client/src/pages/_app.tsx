@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import { ThemeProvider } from '@/context/ThemeContext';
 import Head from 'next/head';
-import { AppProvider } from '@/context/AppContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -34,7 +33,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
     return (
         <ThemeProvider value={themeContextValue}>
-            <AppProvider>
                 <div className='h-screen bg-gray-200 dark:bg-black flex flex-col'>
                     <Head>
                         <title>Clear Cash - Expense Manager</title>
@@ -59,7 +57,6 @@ export default function App({ Component, pageProps }: AppProps) {
                         pauseOnHover={false}
                     />
                 </div>
-            </AppProvider>
         </ThemeProvider>
     );
 }

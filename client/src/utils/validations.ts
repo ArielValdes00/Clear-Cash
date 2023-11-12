@@ -9,3 +9,18 @@ export const isDescriptionValid = (description: string): boolean => {
 
     return regex.test(description);
 };
+
+export const isNameValid = (name: string): boolean => {
+    const regex = /^[A-Za-z\s]+$/;
+    return regex.test(name);
+};
+
+export const isEmailValid = (email: string): boolean => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+};
+
+export const isPasswordValid = (password: string): boolean => {
+    const regex = /^[a-zA-Z0-9]{8,}$/;
+    return regex.test(password);
+};

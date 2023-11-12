@@ -1,13 +1,17 @@
 import { createReport } from '@/routes/reportRoute';
 import React, { useState } from 'react';
-import type { FormReportState, Toast } from '@/types/types';
-import { useAppContext } from '@/context/AppContext';
-import { BiLoaderAlt } from 'react-icons/bi';
+import type { FormReportState, User } from '@/types/types';
+import type { toast } from 'react-toastify';
 import { isValueValid } from '@/utils/validations';
+import LoadingButton from './misc/LoadingButton';
 
-const FormReport: React.FC<Toast> = ({ toast }) => {
-    const { setReport } = useAppContext();
-    const { user } = useAppContext();
+interface FormReportProps {
+    toast: typeof toast
+    setReport: React.Dispatch<React.SetStateAction<any[]>>
+    user: User | null
+}
+
+const FormReport: React.FC<FormReportProps> = ({ toast, setReport, user }) => {
     const [loader, setLoader] = useState<boolean>(false);
     const [formReport, setFormReport] = useState<FormReportState>({
         month: 'January',
@@ -96,19 +100,10 @@ const FormReport: React.FC<Toast> = ({ toast }) => {
                     />
                 </div>
             </div>
-            <button
-                type='submit'
-                aria-label={loader ? 'Creating Report...' : 'Create Report'}
-                className='self-center md:self-end w-full cursor-pointer text-gray-100 dark:text-black px-5 py-[6px] md:py-[8px] rounded-md md:font-bold font-semibold bg-gradient-to-r from-color-green to-color-green-dark hover:opacity-80'
-            >
-                {loader
-                    ? <BiLoaderAlt
-                        size={24}
-                        className='animate-spin mx-auto'
-                    />
-                    : 'Create'
-                }
-            </button>
+            <LoadingButton
+                isLoading={loader}
+                label="Submit"
+            />
         </form>
     );
 };

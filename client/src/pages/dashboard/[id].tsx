@@ -13,7 +13,6 @@ import type { GetServerSidePropsContext } from 'next';
 interface ReportIdPageProps {
     reportData: ReportWithExpensives
     month: string
-    userId: number
 }
 
 const ReportPage: React.FC<ReportIdPageProps> = ({ reportData, month }) => {

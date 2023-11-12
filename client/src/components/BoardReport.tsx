@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import type { NextRouter } from 'next/router';
 import ButtonsPagination from './misc/ButtonsPagination';
-import { useAppContext } from '@/context/AppContext';
 import { deleteReport } from '@/routes/reportRoute';
 import type { ReportWithExpensives } from '@/types/types';
 import ArrayMapper from './misc/ArrayMapper';
@@ -15,10 +14,11 @@ import useMenuHandling from '@/utils/useMenuHandling';
 interface BoardProps {
     toast: typeof toast
     setCurrentMoney: React.Dispatch<React.SetStateAction<number>>
+    report: ReportWithExpensives[]
+    setReport: React.Dispatch<React.SetStateAction<any[]>>
 }
 
-const BoardReport: React.FC<BoardProps> = ({ toast, setCurrentMoney }) => {
-    const { report, setReport } = useAppContext();
+const BoardReport: React.FC<BoardProps> = ({ toast, setCurrentMoney, report, setReport }) => {
     const { theme } = useTheme();
     const router: NextRouter = useRouter();
     const { menuOpen, toggleMenu } = useMenuHandling<number>({ initialMenuState: null });

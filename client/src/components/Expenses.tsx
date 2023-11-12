@@ -13,9 +13,17 @@ const Expenses: React.FC<{ reportData: Expense[], setExpenses: React.Dispatch<Re
         const [loader, setLoader] = useState<boolean>(false);
         const [currentPage, setCurrentPage] = useState<number>(1);
         const [itemsPerPage, setItemsPerPage] = useState(5);
+        const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+        const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+            setSelectedCategory(e.target.value);
+        };
+
+        const filteredReportData = selectedCategory === 'All' ? reportData : reportData.filter(item => item.category === selectedCategory);
+
         const indexOfLastItem: number = currentPage * itemsPerPage;
         const indexOfFirstItem: number = indexOfLastItem - itemsPerPage;
-        const reportDataReverse: Expense[] = [...reportData].reverse();
+        const reportDataReverse: Expense[] = [...filteredReportData].reverse();
         const currentItems: any[] = reportDataReverse?.slice(indexOfFirstItem, indexOfLastItem);
 
         useEffect(() => {
@@ -60,12 +68,20 @@ const Expenses: React.FC<{ reportData: Expense[], setExpenses: React.Dispatch<Re
                     <p className='font-semibold text-xl'>Your Expensives</p>
                     <select
                         aria-label='Filter Categories'
+                        value={selectedCategory}
+                        onChange={handleCategoryChange}
                         className='rounded-lg px-2 py-[5px] dark:text-black bg-gray-100 dark:bg-gray-200 w-1/3 shadow'>
                         <option value="All">All</option>
                         <option value="Investments">Investments</option>
                         <option value="Clothing">Clothing</option>
                         <option value="Food">Food</option>
-                        <option value="travels">travels</option>
+                        <option value="Travels">Travels</option>
+                        <option value="Health">Health</option>
+                        <option value="Education">Education</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Home">Home</option>
+                        <option value="Savings">Savings</option>
                     </select>
                 </div>
                 <ArrayMapper data={currentItems} textPosition="" as="div">

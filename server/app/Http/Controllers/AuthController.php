@@ -15,19 +15,19 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'confirm Password' => 'required|string|min:8|same:password',
         ]);
 
-        $existingUser = User::where('email', $request->email)->first();
+        $data = $request->except('confirmPassword');
+
+        $existingUser = User::where('email', $data['email'])->first();
 
         if ($existingUser) {
-            return response()->json(['message' => 'Email already exist'], 422);
+            return response()->json(['message' => 'Email already exists'], 422);
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $data['password'] = Hash::make($data['password']);
+        $user = User::create($data);
 
         return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
     }
@@ -39,16 +39,21 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid login details'], 401);
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Email not found'], 404);
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json(['message' => 'Invalid password'], 401);
+        }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['message' => 'User logged in successfully', 'access_token' => $token, 'token_type' => 'Bearer', 'user' => $user]);
+        return response()->json(['message' => 'User logged in successfully, redirecting...', 'access_token' => $token, 'token_type' => 'Bearer', 'user' => $user]);
     }
+
 
     public function logout(Request $request)
     {
