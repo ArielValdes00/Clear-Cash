@@ -4,6 +4,7 @@ import { isEmailValid, isNameValid, isPasswordValid } from '@/utils/validations'
 import React, { useState } from 'react';
 import type { toast } from 'react-toastify';
 import LoadingButton from './misc/LoadingButton';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 interface RegisterProps {
     toast: typeof toast
@@ -12,6 +13,8 @@ interface RegisterProps {
 
 const Register: React.FC<RegisterProps> = ({ toast, toggleForm }) => {
     const [loader, setLoader] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showPassword2, setShowPassword2] = useState<boolean>(false);
     const [formRegister, setFormRegiser] = useState<FormRegister>({
         name: '',
         email: '',
@@ -58,7 +61,7 @@ const Register: React.FC<RegisterProps> = ({ toast, toggleForm }) => {
             const res = await register(formRegister);
             setLoader(false);
             toast.success(res.message);
-            console.log(res);
+            location.reload();
         } catch (error: any) {
             toast.error(error.message);
             setLoader(false);
@@ -84,36 +87,52 @@ const Register: React.FC<RegisterProps> = ({ toast, toggleForm }) => {
                 <input
                     name='email'
                     id='email'
-                    type="email"
+                    type='email'
                     onChange={handleChange}
                     value={formRegister.email}
                     placeholder='Email'
                     className='rounded-md p-2 py-3 2xl:p-4 bg-gray-100 dark:bg-zinc-800 shadow'
                 />
             </div>
-            <div className='flex flex-col gap-1 dark:text-gray-200'>
+            <div className='flex flex-col gap-1 dark:text-gray-200 relative'>
                 <label htmlFor='password' className='font-semibold ms-1'>Password</label>
-                <input
-                    name='password'
-                    id='password'
-                    type="password"
-                    onChange={handleChange}
-                    value={formRegister.password}
-                    placeholder='Password'
-                    className='rounded-md p-2 py-3 2xl:p-4 bg-gray-100 dark:bg-zinc-800 shadow'
-                />
+                <div className='relative'>
+                    <input
+                        name='password'
+                        id='password'
+                        type={showPassword ? 'text' : 'password'}
+                        onChange={handleChange}
+                        value={formRegister.password}
+                        placeholder='Password'
+                        className='rounded-md w-full p-2 py-3 2xl:p-4 bg-gray-100 dark:bg-zinc-800 shadow pr-12'
+                    />
+                    <span
+                        className='absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer'
+                        onClick={() => { setShowPassword(!showPassword); }}
+                    >
+                        {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
+                    </span>
+                </div>
             </div>
             <div className='flex flex-col gap-1 dark:text-gray-200 mb-2 2xl:mb-3'>
                 <label htmlFor='confirmPassword' className='font-semibold ms-1'>Confirm Password</label>
-                <input
-                    name='confirmPassword'
-                    id='Confirm Password'
-                    type="password"
-                    onChange={handleChange}
-                    value={formRegister.confirmPassword}
-                    placeholder='Confirm Password'
-                    className='rounded-md p-2 py-3 2xl:p-4 bg-gray-100 dark:bg-zinc-800 shadow'
-                />
+                <div className='relative'>
+                    <input
+                        name='confirmPassword'
+                        id='Confirm Password'
+                        type={showPassword2 ? 'text' : 'password'}
+                        onChange={handleChange}
+                        value={formRegister.confirmPassword}
+                        placeholder='Confirm Password'
+                        className='rounded-md w-full p-2 py-3 2xl:p-4 bg-gray-100 dark:bg-zinc-800 shadow pr-12'
+                    />
+                    <span
+                        className='absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer'
+                        onClick={() => { setShowPassword2(!showPassword2); }}
+                    >
+                        {showPassword2 ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
+                    </span>
+                </div>
             </div>
             <LoadingButton
                 isLoading={loader}

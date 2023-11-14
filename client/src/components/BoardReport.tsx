@@ -66,8 +66,8 @@ const BoardReport: React.FC<BoardProps> = ({ toast, setCurrentMoney, report, set
                 }
             }
             toast.error(res.message);
-        } catch (error) {
-            console.error(error);
+        } catch (error: any) {
+            throw new Error(error);
         } finally {
             setLoader(false);
         }
@@ -121,7 +121,7 @@ const BoardReport: React.FC<BoardProps> = ({ toast, setCurrentMoney, report, set
                                         className="border-b border-black dark:border-gray-100 cursor-pointer bg-gray-100 dark:bg-zinc-800 text-black dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-opacity-80"
                                     >
                                         <td className="p-2 py-3 md:p-4">{item.month}</td>
-                                        <td className="p-2 py-3 md:p-4">${item.income}</td>
+                                        <td className="p-2 py-3 md:p-4">${Math.floor(item.income)}</td>
                                         <td className="p-2 py-3 md:p-4 hidden md:block">${totalSpent}</td>
                                         <td className="p-2 py-3 md:p-4">${item.income - totalSpent}</td>
                                         <td className="p-2 py-3 md:p-4 hidden md:block font-semibold"

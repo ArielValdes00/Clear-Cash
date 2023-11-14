@@ -92,7 +92,7 @@ const Expenses: React.FC<{ reportData: Expense[], setExpenses: React.Dispatch<Re
                         return (
                             <div key={card.id} className='grid grid-cols-3 bg-gray-100 dark:text-gray-100 dark:bg-zinc-800 rounded-md pl-3 py-3 pr-2 my-3 text-black text-[15px] shadow'>
                                 <div className='col-span-2 flex flex-col gap-'>
-                                    <p>Expensive: <strong>${card.amount}</strong></p>
+                                    <p>Expensive: <strong>${Math.floor(card.amount)}</strong></p>
                                     <p>{card.description}</p>
                                 </div>
                                 <div className='ml-auto text-end flex gap-1'>

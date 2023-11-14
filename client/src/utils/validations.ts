@@ -5,7 +5,7 @@ export const isValueValid = (value: string): boolean => {
 };
 
 export const isDescriptionValid = (description: string): boolean => {
-    const regex = /^[A-Za-z\s]+$/;
+    const regex = /^[A-Za-z\s.,'áéíóúÁÉÍÓÚ]{1,50}$/;
 
     return regex.test(description);
 };

@@ -6,14 +6,17 @@ import Cookies from 'js-cookie';
 import type { toast } from 'react-toastify';
 import { isEmailValid, isPasswordValid } from '@/utils/validations';
 import LoadingButton from './misc/LoadingButton';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 interface LoginProps {
     toast: typeof toast
     toggleForm: () => void
+    setForgotPassword: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Login: React.FC<LoginProps> = ({ toast, toggleForm }) => {
+const Login: React.FC<LoginProps> = ({ toast, toggleForm, setForgotPassword }) => {
     const [loader, setLoader] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const router = useRouter();
     const [formLogin, setFormLogin] = useState<FormLogin>({
         email: '',
@@ -45,8 +48,8 @@ const Login: React.FC<LoginProps> = ({ toast, toggleForm }) => {
         try {
             const res = await login(formLogin);
             if (res) {
-                Cookies.set('token', res.access_token);
-                Cookies.set('user', JSON.stringify(res.user));
+                Cookies.set('token', res.access_token, { expires: 7 });
+                Cookies.set('user', JSON.stringify(res.user), { expires: 7 });
                 toast.success(res.message);
                 if (res.user.name) {
                     router.push('/dashboard');
@@ -76,16 +79,26 @@ const Login: React.FC<LoginProps> = ({ toast, toggleForm }) => {
             </div>
             <div className='flex flex-col gap-1 dark:text-gray-200'>
                 <label htmlFor='password' className='font-semibold ms-1'>Password</label>
-                <input
-                    name='password'
-                    id='password'
-                    type="password"
-                    onChange={handleChange}
-                    value={formLogin.password}
-                    placeholder='Password'
-                    className='rounded-md p-2 py-3 2xl:p-4 bg-gray-100 dark:bg-zinc-800 shadow'
-                />
-                <strong className='text-end text-sm underline mr-1 mt-1 cursor-pointer'>Forgot Password?</strong>
+                <div className='relative'>
+                    <input
+                        name='password'
+                        id='password'
+                        type={showPassword ? 'text' : 'password'}
+                        onChange={handleChange}
+                        value={formLogin.password}
+                        placeholder='Password'
+                        className='rounded-md p-2 py-3 2xl:p-4 bg-gray-100 dark:bg-zinc-800 shadow pr-12 w-full'
+                    />
+                    <span
+                        className='absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer'
+                        onClick={() => { setShowPassword(!showPassword); }}
+                    >
+                        {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
+                    </span>
+                </div>
+                <strong
+                    onClick={() => { setForgotPassword(true); }}
+                    className='text-end text-sm underline mr-1 mt-1 cursor-pointer'>Forgot Password?</strong>
             </div>
             <LoadingButton
                 isLoading={loader}

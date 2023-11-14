@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
     }, [menuOpen]);
 
     return (
-        <div className={`${loginRoute !== '/login' ? 'grid-cols-3' : 'grid grid-cols-2'} select-none grid items-center px-4 lg:px-5 py-1`}>
+        <div className={`${loginRoute !== '/login' && !loginRoute.includes('/password') ? 'grid-cols-3' : 'grid grid-cols-2'} select-none grid items-center px-4 lg:px-5 py-1`}>
             <div className='flex gap-1 text-sm text-color-green font-bold uppercase'>
                 <BsCoin size={24} />
                 <div className='flex flex-col leading-3 text-gradient'>
@@ -55,25 +55,46 @@ const Navbar: React.FC = () => {
                     <p>Cash</p>
                 </div>
             </div>
-            <div className={`${loginRoute !== '/login' ? 'mx-auto' : 'ml-auto'} mt-[15px]`}>
+            <div className={`${loginRoute !== '/login' && !loginRoute.includes('/password') ? 'mx-auto' : 'ml-auto'} mt-[15px]`}>
                 <ButtonDarkMode />
             </div>
-            {loginRoute !== '/login' && (
+            {loginRoute !== '/login' && !loginRoute.includes('/password') && (
                 <div className='ml-auto capitalize'>
                     {!user?.name
                         ? (
                             <Link
                                 href={'/login'}
+                                aria-label='Login'
                                 className='shadow bg-gradient-to-r from-color-green to-color-green-dark px-4 py-2 font-semibold rounded-md text-gray-100 dark:text-black text-sm hover:opacity-80'>
                                 Log In
                             </Link>
                         )
                         : (
-                            <div className='shadow bg-gradient-to-r from-color-green to-color-green-dark px-4 lg:py-2 py-[6px] font-semibold rounded-md text-gray-100 dark:text-black text-sm hover:opacity-80'>
-                                <p onClick={toggleMenu} className='relative cursor-pointer tracking-wide text-[15px]'>{user?.name}</p>
+                            <div
+                                tabIndex={0}
+                                aria-label='openMenu'
+                                onClick={toggleMenu}
+                                onKeyDown={(e: any) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        toggleMenu();
+                                    }
+                                }}
+                                className='shadow bg-gradient-to-r cursor-pointer from-color-green to-color-green-dark px-4 lg:py-2 py-[6px] font-semibold rounded-md text-gray-100 dark:text-black text-sm hover:opacity-80'>
+                                <p className='relative tracking-wide text-[15px]'>{user?.name}</p>
                                 {menuOpen && (
                                     <ul className='absolute z-50 right-5 top-14 cursor-pointer close-menu'>
-                                        <li onClick={logOut} className='text-black dark:text-white w-28 text-center py-2 text-sm border bg-gray-100 hover:bg-opacity-70 dark:bg-zinc-800 dark:hover:bg-black cursor-pointer rounded-l-lg rounded-br-lg shadow'>
+                                        <li
+                                            onClick={logOut}
+                                            onKeyDown={(e: any) => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault();
+                                                    logOut();
+                                                }
+                                            }}
+                                            tabIndex={0}
+                                            aria-label='logout'
+                                            className='text-black dark:text-white w-28 text-center py-2 text-sm border bg-gray-100 hover:bg-opacity-70 dark:bg-zinc-800 dark:hover:bg-black cursor-pointer rounded-l-lg rounded-br-lg shadow'>
                                             Logout
                                         </li>
                                     </ul>

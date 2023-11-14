@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/users', [AuthController::class, 'getAllUsers']);
 Route::get('/users/{id}', [AuthController::class, 'getUserById']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword']);
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 Route::get('/report', [ReportController::class, 'index']);
 Route::post('/report', [ReportController::class, 'store']);
 Route::get('/report/{id}', [ReportController::class, 'show']);

@@ -1,3 +1,4 @@
+import type { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import { FaArrowRight } from 'react-icons/fa';
 
@@ -16,4 +17,22 @@ export default function Home() {
             </div>
         </div>
     );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+    const { req } = context;
+    const { cookies } = req;
+
+    if (cookies.token) {
+        return {
+            redirect: {
+                destination: '/dashboard',
+                permanent: false
+            }
+        };
+    }
+
+    return {
+        props: {}
+    };
 }

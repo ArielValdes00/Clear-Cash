@@ -26,7 +26,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ reportId, setExpenses }) => {
             }
 
             if (!isDescriptionValid(formExpense.description)) {
-                toast.error('The description is not valid. It can only contain letters and spaces.');
+                toast.error('The description is not valid. It can only contain letters, spaces, commas, periods, and apostrophes, and it must not exceed 50 characters.');
                 setLoader(false);
                 return;
             }

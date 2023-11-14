@@ -36,3 +36,21 @@ export const getUser = async (id: any) => {
         throw new Error(error.response?.data?.message);
     }
 };
+
+export const forgotPassword = async (email: string) => {
+    try {
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/forgot-password`, { email });
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message);
+    }
+};
+
+export const resetPassword = async (formPassword: any) => {
+    try {
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/reset-password`, formPassword);
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message);
+    }
+};
