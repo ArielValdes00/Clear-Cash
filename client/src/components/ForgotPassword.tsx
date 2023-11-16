@@ -8,9 +8,10 @@ import { forgotPassword } from '@/routes/authRoute';
 interface ForgotPasswordProp {
     toast: typeof toast
     setForgotPassword: React.Dispatch<React.SetStateAction<boolean>>
+    showForgotPassword: boolean
 }
 
-const ForgotPassword: React.FC<ForgotPasswordProp> = ({ setForgotPassword, toast }) => {
+const ForgotPassword: React.FC<ForgotPasswordProp> = ({ setForgotPassword, showForgotPassword, toast }) => {
     const [email, setEmail] = useState<string>('');
     const [loader, setLoader] = useState<boolean>(false);
 

@@ -10,6 +10,8 @@ import type { toast } from 'react-toastify';
 import DropdownMenu from './misc/DropdownMenu';
 import { SlOptionsVertical } from 'react-icons/sl';
 import useMenuHandling from '@/utils/useMenuHandling';
+import { AnimatePresence, motion } from 'framer-motion';
+import { variants } from '@/utils/animations';
 
 interface BoardProps {
     toast: typeof toast
@@ -127,7 +129,7 @@ const BoardReport: React.FC<BoardProps> = ({ toast, setCurrentMoney, report, set
                                         <td className="p-2 py-3 md:p-4 hidden md:block font-semibold"
                                             style={{ color: getColor(percentageSpent, theme) }}
                                         >{percentageSpent}%</td>
-                                        <td className="p-2 py-3 md:p-4 relative">
+                                        <td className="p-2 py-3 md:p-4">
                                             <div>
                                                 <SlOptionsVertical
                                                     size={18}
@@ -143,16 +145,27 @@ const BoardReport: React.FC<BoardProps> = ({ toast, setCurrentMoney, report, set
                                                     className='mt-[0.4rem] cursor-pointer text-zinc-800 dark:text-gray-200 ml-auto'
                                                 />
                                             </div>
-                                            {menuOpen === item.id && (
-                                                <DropdownMenu
-                                                    className='right-4 md:right-6 close-menu'
-                                                    item={item}
-                                                    handleDelete={handleDeleteReport}
-                                                    loader={loader}
-                                                    toggleMenu={toggleMenu}
-                                                />
-                                            )}
                                         </td>
+                                        <AnimatePresence>
+                                                {menuOpen === item.id && (
+                                                    <motion.div
+                                                        initial="closed"
+                                                        animate="open"
+                                                        exit="closed"
+                                                        variants={variants}
+                                                        transition={{ duration: 0.15 }}
+                                                        className='right-[125px] top-2 close-menu relative'
+                                                    >
+                                                        <DropdownMenu
+                                                            item={item}
+                                                            handleDelete={handleDeleteReport}
+                                                            loader={loader}
+                                                            toggleMenu={toggleMenu}
+                                                            className='close-menu absolute'
+                                                        />
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
                                     </tr>
                                 );
                             }}

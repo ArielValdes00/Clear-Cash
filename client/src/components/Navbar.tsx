@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import type { User } from '@/types/types';
+import { AnimatePresence, motion } from 'framer-motion';
+import { variants } from '@/utils/animations';
 
 const Navbar: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -70,42 +72,54 @@ const Navbar: React.FC = () => {
                             </Link>
                         )
                         : (
-                            <div
-                                tabIndex={0}
-                                aria-label='openMenu'
-                                onClick={toggleMenu}
-                                onKeyDown={(e: any) => {
-                                    if (e.key === 'Enter') {
-                                        e.preventDefault();
-                                        toggleMenu();
-                                    }
-                                }}
-                                className='shadow bg-gradient-to-r cursor-pointer from-color-green to-color-green-dark px-4 lg:py-2 py-[6px] font-semibold rounded-md text-gray-100 dark:text-black text-sm hover:opacity-80'>
-                                <p className='relative tracking-wide text-[15px]'>{user?.name}</p>
-                                {menuOpen && (
-                                    <ul className='absolute z-50 right-5 top-14 cursor-pointer close-menu'>
-                                        <li
-                                            onClick={logOut}
-                                            onKeyDown={(e: any) => {
-                                                if (e.key === 'Enter') {
-                                                    e.preventDefault();
-                                                    logOut();
-                                                }
-                                            }}
-                                            tabIndex={0}
-                                            aria-label='logout'
-                                            className='text-black dark:text-white w-28 text-center py-2 text-sm border bg-gray-100 hover:bg-opacity-70 dark:bg-zinc-800 dark:hover:bg-black cursor-pointer rounded-l-lg rounded-br-lg shadow'>
-                                            Logout
-                                        </li>
-                                    </ul>
-                                )}
-                            </div>
+                            <>
+                                <div
+                                    tabIndex={0}
+                                    aria-label='openMenu'
+                                    onClick={toggleMenu}
+                                    onKeyDown={(e: any) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            toggleMenu();
+                                        }
+                                    }}
+                                    className='shadow bg-gradient-to-r cursor-pointer from-color-green to-color-green-dark px-4 lg:py-2 py-[6px] font-semibold rounded-md text-gray-100 dark:text-black text-sm hover:opacity-80'>
+                                    <p className='tracking-wide text-[15px]'>{user?.name}</p>
+                                </div>
+                                <AnimatePresence>
+                                    {menuOpen && (
+                                        <motion.div
+                                            initial="closed"
+                                            animate="open"
+                                            exit="closed"
+                                            variants={variants}
+                                            transition={{ duration: 0.15 }}
+                                            className='right-12 close-menu relative'
+                                        >
+                                            <ul className='absolute z-50 top-1 cursor-pointer close-menu'>
+                                                <li
+                                                    onClick={logOut}
+                                                    onKeyDown={(e: any) => {
+                                                        if (e.key === 'Enter') {
+                                                            e.preventDefault();
+                                                            logOut();
+                                                        }
+                                                    }}
+                                                    tabIndex={0}
+                                                    aria-label='logout'
+                                                    className='text-black dark:text-white w-28 text-center py-2 text-sm border bg-gray-100 dark:bg-zinc-800 hover:bg-white dark:hover:bg-black cursor-pointer rounded-l-lg rounded-br-lg shadow'>
+                                                    Logout
+                                                </li>
+                                            </ul>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </>
                         )
                     }
                 </div>
             )}
         </div >
-
     );
 };
 

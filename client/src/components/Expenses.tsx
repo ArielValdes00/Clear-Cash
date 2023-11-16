@@ -5,6 +5,8 @@ import { SlOptionsVertical } from 'react-icons/sl';
 import ArrayMapper from './misc/ArrayMapper';
 import ButtonsPagination from './misc/ButtonsPagination';
 import DropdownMenu from './misc/DropdownMenu';
+import { AnimatePresence, motion } from 'framer-motion';
+import { variants } from '@/utils/animations';
 import useMenuHandling from '@/utils/useMenuHandling';
 
 const Expenses: React.FC<{ reportData: Expense[], setExpenses: React.Dispatch<React.SetStateAction<Expense[]>> }> =
@@ -115,15 +117,26 @@ const Expenses: React.FC<{ reportData: Expense[], setExpenses: React.Dispatch<Re
                                                 className='mt-[0.4rem] cursor-pointer text-zinc-800 dark:text-gray-200 ml-auto'
                                             />
                                         </div>
-                                        {menuOpen === card.id && (
-                                            <DropdownMenu
-                                                className='right-2 close-menu'
-                                                item={card}
-                                                handleDelete={handleDeleteExpense}
-                                                loader={loader}
-                                                toggleMenu={toggleMenu}
-                                            />
-                                        )}
+                                        <AnimatePresence>
+                                            {menuOpen === card.id && (
+                                                <motion.div
+                                                    initial="closed"
+                                                    animate="open"
+                                                    exit="closed"
+                                                    variants={variants}
+                                                    transition={{ duration: 0.15 }}
+                                                    className='right-[90px] close-menu relative'
+                                                >
+                                                    <DropdownMenu
+                                                        item={card}
+                                                        handleDelete={handleDeleteExpense}
+                                                        loader={loader}
+                                                        toggleMenu={toggleMenu}
+                                                        className='close-menu absolute'
+                                                    />
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
                                     </div>
                                 </div>
                             </div>
